@@ -1,0 +1,160 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h1>Crear Cuenta</h1>
+      <p>Completa el formulario para registrarte</p>
+    </div>
+
+    <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
+      <!-- Usuario -->
+      <div class="form-group">
+        <label for="username">Usuario *</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="user.username"
+          (focus)="clearMessages()"
+          required
+          minlength="3"
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Nombres -->
+      <div class="form-group">
+        <label for="nombres">Nombres *</label>
+        <input
+          type="text"
+          id="nombres"
+          name="nombres"
+          [(ngModel)]="user.nombres"
+          (focus)="clearMessages()"
+          required
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Apellido -->
+      <div class="form-group">
+        <label for="apellido">Apellido *</label>
+        <input
+          type="text"
+          id="apellido"
+          name="apellido"
+          [(ngModel)]="user.apellido"
+          (focus)="clearMessages()"
+          required
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Correo -->
+      <div class="form-group">
+        <label for="correo">Correo Electrónico *</label>
+        <input
+          type="email"
+          id="correo"
+          name="correo"
+          [(ngModel)]="user.correo"
+          (focus)="clearMessages()"
+          required
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Celular -->
+      <div class="form-group">
+        <label for="celular">Celular *</label>
+        <input
+          type="number"
+          id="celular"
+          name="celular"
+          [(ngModel)]="user.celular"
+          (focus)="clearMessages()"
+          required
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label for="password">Contraseña *</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="user.password"
+          (focus)="clearMessages()"
+          placeholder="Mínimo 6 caracteres"
+          required
+          minlength="6"
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Contraseña *</label>
+        <input
+          type="password"
+          id="confirmPassword"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          (focus)="clearMessages()"
+          placeholder="Repite tu contraseña"
+          required
+          [disabled]="loading"
+          class="form-control"
+        />
+      </div>
+
+      <!-- Mensaje de Error -->
+      <div class="error-message" *ngIf="errorMessage">
+        <span class="error-icon">⚠️</span>
+        {{ errorMessage }}
+      </div>
+
+      <!-- Mensaje de Éxito -->
+      <div class="success-message" *ngIf="successMessage">
+        <span class="success-icon">✓</span>
+        {{ successMessage }}
+      </div>
+
+      <!-- Botón de Registro -->
+      <button
+        type="submit"
+        [disabled]="loading || registerForm.invalid"
+        class="btn btn-primary"
+      >
+        <span *ngIf="!loading">Registrarse</span>
+        <span *ngIf="loading" class="loading-spinner">
+          <span class="spinner"></span>
+          Registrando...
+        </span>
+      </button>
+
+      <!-- Divider -->
+      <div class="divider">
+        <span>o</span>
+      </div>
+
+      <!-- Botón para ir al Login -->
+      <button
+        type="button"
+        (click)="goToLogin()"
+        [disabled]="loading"
+        class="btn btn-secondary"
+      >
+        ¿Ya tienes cuenta? Inicia sesión
+      </button>
+    </form>
+  </div>
+</div>
+

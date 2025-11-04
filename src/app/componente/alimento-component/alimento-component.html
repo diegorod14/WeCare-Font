@@ -1,0 +1,57 @@
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <!-- Nombre Alimento -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef> Alimento </th>
+      <td mat-cell *matCellDef="let element"> {{ element.nombre }} </td>
+    </ng-container>
+
+    <!-- Categoria.nombre -->
+    <ng-container matColumnDef="categoria">
+      <th mat-header-cell *matHeaderCellDef> Categoría </th>
+      <td mat-cell *matCellDef="let element"> {{ element.categoria?.nombre }} </td>
+    </ng-container>
+
+    <!-- Proteínas -->
+    <ng-container matColumnDef="proteinas">
+      <th mat-header-cell *matHeaderCellDef> Proteínas (g) </th>
+      <td mat-cell *matCellDef="let element"> {{ element.proteinas }} </td>
+    </ng-container>
+
+    <!-- Carbohidratos -->
+    <ng-container matColumnDef="carbohidratos">
+      <th mat-header-cell *matHeaderCellDef> Carbohidratos (g) </th>
+      <td mat-cell *matCellDef="let element"> {{ element.carbohidratos }} </td>
+    </ng-container>
+
+    <!-- Grasas -->
+    <ng-container matColumnDef="grasas">
+      <th mat-header-cell *matHeaderCellDef> Grasas (g) </th>
+      <td mat-cell *matCellDef="let element"> {{ element.grasas }} </td>
+    </ng-container>
+
+    <!-- Calorías -->
+    <ng-container matColumnDef="calorias">
+      <th mat-header-cell *matHeaderCellDef> Calorías (kcal) </th>
+      <td mat-cell *matCellDef="let element"> {{ element.calorias }} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <!-- Estado: sin datos -->
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+        <ng-container *ngIf="!loading && !error">No hay alimentos para mostrar.</ng-container>
+        <ng-container *ngIf="loading">Cargando alimentos...</ng-container>
+        <ng-container *ngIf="error">{{ error }}</ng-container>
+      </td>
+    </tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                 showFirstLastButtons
+                 aria-label="Paginador de alimentos">
+  </mat-paginator>
+</div>
