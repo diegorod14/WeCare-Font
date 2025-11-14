@@ -34,22 +34,14 @@ export class UsuarioService {
   delete(id: number) {
     return this.http.delete(this.url + "/usuario/" + id);
   }
-  findByUsername(username: string): Observable<any> {
-    // Endpoint: GET /api?username=valor
-    return this.http.get<User>(this.url + `?username=${encodeURIComponent(username)}`);
+
+  registrar(usuario: any): Observable<any> {
+    // Asegurar que no se envíe el id al backend
+    const { id, fecha_creacion, ...usuarioSinId } = usuario;
+    console.log('Service - Usuario a enviar (sin id):', usuarioSinId);
+    return this.http.post(this.url + "/registrar", usuarioSinId);
   }
-  findByCorreo(correo: string): Observable<any> {
-    // Endpoint: GET /api/usuario/correo/{correo}
-    return this.http.get<User>(this.url + "/usuario/correo/" + encodeURIComponent(correo));
-  }
-  findByNombres(nombres: string): Observable<any> {
-    // Endpoint: GET /api/usuario/nombres/{nombres}
-    return this.http.get<User[]>(this.url + "/usuario/nombres/" + encodeURIComponent(nombres));
-  }
-  findByApellidos(apellidos: string): Observable<any> {
-    // Endpoint: GET /api/usuario/apellidos/{apellidos}
-    return this.http.get<User[]>(this.url + "/usuario/apellidos/" + encodeURIComponent(apellidos));
-  }
+
   setList(listaNueva : User[]){
     this.listaCambio.next(listaNueva);//enviar la nueva lista a los suscriptores
   }
