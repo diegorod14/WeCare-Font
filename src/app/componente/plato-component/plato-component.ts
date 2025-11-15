@@ -12,10 +12,11 @@ import {
 import {MatPaginator} from '@angular/material/paginator';
 import {Router, RouterLink} from '@angular/router';
 import {Plato} from '../../model/plato';
-import {MatDialog} from '@angular/material/dialog';
 import {PlatoService} from '../../services/plato-service';
-import {ComponentType} from '@angular/cdk/portal';
 import {MatButton} from '@angular/material/button';
+import {MatDialog} from '@angular/material/dialog';
+import {ConfirmDialogo} from './confirm-dialogo/confirm-dialogo';
+
 
 @Component({
   selector: 'app-plato-component',
@@ -33,7 +34,7 @@ import {MatButton} from '@angular/material/button';
     MatHeaderRowDef,
     MatHeaderCellDef,
     RouterLink,
-    MatButton
+    MatButton,
   ],
   templateUrl: './plato-component.html',
   styleUrl: './plato-component.css',
@@ -48,7 +49,6 @@ export class PlatoComponent {
   platoService: PlatoService = inject(PlatoService);
   route: Router = inject(Router);
   dialog = inject(MatDialog);
-  private ConfirmDialogo: ComponentType<unknown>;
 
   constructor() {
   }
@@ -74,7 +74,7 @@ export class PlatoComponent {
   }
 
   openDialog(id: number) {
-    const dialogRef = this.dialog.open(this.ConfirmDialogo);
+    const dialogRef = this.dialog.open(ConfirmDialogo);
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.platoService.delete(id).subscribe({
