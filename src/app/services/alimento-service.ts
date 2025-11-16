@@ -85,15 +85,15 @@ export class AlimentoService {
     const a = new Alimento();
     if (!raw || typeof raw !== 'object') return a;
 
-    a.idAlimento = raw.idAlimento ?? raw.id ?? 0;
+    a.id = raw.idAlimento ?? raw.id ?? 0;
     a.nombre = raw.nombre ?? raw.name ?? raw.nombreAlimento ?? '';
 
     // Macronutrientes con múltiples alias + parsing de strings con unidades + fuzzy
-    a.proteinas = this.pickNumber(raw, ['proteinas','proteina','protein','proteins'])
+    a.proteina = this.pickNumber(raw, ['proteinas','proteina','protein','proteins'])
       ?? this.pickByFuzzy(raw, [/^prot/i, /prote/i]);
-    a.carbohidratos = this.pickNumber(raw, ['carbohidratos','carbohidrato','carbs','hidratos','hidratosCarbono'])
+    a.carbohidrato = this.pickNumber(raw, ['carbohidratos','carbohidrato','carbs','hidratos','hidratosCarbono'])
       ?? this.pickByFuzzy(raw, [/carb/i, /hidrato/i]);
-    a.grasas = this.pickNumber(raw, ['grasas','grasa','fat','fats'])
+    a.grasa = this.pickNumber(raw, ['grasas','grasa','fat','fats'])
       ?? this.pickByFuzzy(raw, [/^fat/i, /grasa/i, /lipid/i]);
     a.calorias = this.pickNumber(raw, ['calorias','kcal','calories','energia','energy'])
       ?? this.pickByFuzzy(raw, [/kcal/i, /calor(?!io)/i, /energ/i], [/calcio/i]);

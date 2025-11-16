@@ -1,0 +1,65 @@
+:root {
+  --text: #0f172a;   /* slate-900 */
+  --muted: #475569;  /* slate-600 */
+  --bg: #ffffff;
+  --max: 1200px;
+  --radius: 18px;
+}
+
+.wrapper {
+  width: min(var(--max), 92%);
+  margin: 56px auto;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: clamp(24px, 6vw, 56px);
+  align-items: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Mueve el bloque de texto un poco hacia la derecha en pantallas grandes */
+  padding-inline-start: clamp(24px, 6vw, 120px);
+}
+
+h1 {
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw + 1rem, 4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+
+.lead {
+  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
+  color: var(--muted);
+  max-width: 46ch;
+}
+
+.figure {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(2, 6, 23, 0.15);
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .wrapper {
+    margin: 32px auto;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  /* Quitar el padding en móviles para usar todo el ancho */
+  .copy { padding-inline-start: 0; }
+}

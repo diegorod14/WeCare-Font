@@ -14,21 +14,27 @@
     </ng-container>
 
     <!-- Proteínas -->
-    <ng-container matColumnDef="proteinas">
+    <ng-container matColumnDef="proteina">
       <th mat-header-cell *matHeaderCellDef> Proteínas (g) </th>
-      <td mat-cell *matCellDef="let element"> {{ element.proteinas }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.proteina }} </td>
     </ng-container>
 
     <!-- Carbohidratos -->
-    <ng-container matColumnDef="carbohidratos">
+    <ng-container matColumnDef="carbohidrato">
       <th mat-header-cell *matHeaderCellDef> Carbohidratos (g) </th>
-      <td mat-cell *matCellDef="let element"> {{ element.carbohidratos }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.carbohidrato }} </td>
     </ng-container>
 
     <!-- Grasas -->
-    <ng-container matColumnDef="grasas">
+    <ng-container matColumnDef="grasa">
       <th mat-header-cell *matHeaderCellDef> Grasas (g) </th>
-      <td mat-cell *matCellDef="let element"> {{ element.grasas }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.grasa }} </td>
+    </ng-container>
+
+    <!-- Fibra -->
+    <ng-container matColumnDef="fibra">
+      <th mat-header-cell *matHeaderCellDef> Fibra (g) </th>
+      <td mat-cell *matCellDef="let element"> {{ element.fibra }} </td>
     </ng-container>
 
     <!-- Calorías -->

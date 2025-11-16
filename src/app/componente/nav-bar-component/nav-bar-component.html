@@ -1,0 +1,21 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <a class="brand" [routerLink]="'/'">
+      <img src="/logo.png" alt="MyCare" class="logo" />
+      <span class="brand-text">MyCare</span>
+    </a>
+    <span class="spacer"></span>
+    @if(esUsuario()) {
+    <button mat-raised-button [routerLink]="'/Alimento'">Alimentos</button>
+    <button mat-raised-button [routerLink]="'/Plato'"> Platos </button>
+    <button mat-raised-button [routerLink]="'/nuevo-edit'">Nuevo Plato</button>
+    <button mat-raised-button [routerLink]="'/NuevoAlimento'">Nuevo Alimento</button>
+    <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
+
+    }
+    @if(!esUsuario() && !esNutricionista()) {
+    <button mat-raised-button [routerLink]="'/registro'">Registrar Usuario</button>
+    <button mat-raised-button [routerLink]="'/login'">Iniciar Sesión</button>
+    }
+  </mat-toolbar-row>
+</mat-toolbar>

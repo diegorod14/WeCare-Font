@@ -46,9 +46,9 @@ export class AlimentoNuevoComponent implements OnInit {
   private buildForm() {
     this.alimentoForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.maxLength(200)]],
-      proteinas: [0, [Validators.min(0)]],
-      carbohidratos: [0, [Validators.min(0)]],
-      grasas: [0, [Validators.min(0)]],
+      proteina: [0, [Validators.min(0)]],
+      carbohidrato: [0, [Validators.min(0)]],
+      grasa: [0, [Validators.min(0)]],
       calorias: [0, [Validators.min(0)]],
       fibra: [0, [Validators.min(0)]],
       categoriaId: [null, Validators.required]
@@ -89,9 +89,9 @@ export class AlimentoNuevoComponent implements OnInit {
     // Construir el payload para la API (sin id, será autogenerado)
     const payload: any = {
       nombre: v.nombre?.trim() ?? '',
-      proteinas: Number(v.proteinas) || 0,
-      carbohidratos: Number(v.carbohidratos) || 0,
-      grasas: Number(v.grasas) || 0,
+      proteina: Number(v.proteina) || 0,
+      carbohidrato: Number(v.carbohidrato) || 0,
+      grasa: Number(v.grasa) || 0,
       fibra: Number(v.fibra) || 0,
       calorias: Number(v.calorias) || 0,
       categoriaId: Number(v.categoriaId) || 0

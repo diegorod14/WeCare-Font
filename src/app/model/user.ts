@@ -1,13 +1,11 @@
 export class User {
-  id: number = 0;
-  username: String = "";
-  password?: string; // Opcional, solo para registro/login
-  correo: String = "";
-  celular: number = 0;
+  id?: number;
+  username: string = "";
+  password?: string;
+  correo: string = "";
+  celular: string = "";
   nombres: string = "";
-  apellido: string = "";
-  fecha_creacion: Date = new Date();
-  fecha_actualizacion: Date = new Date();
+  apellidos: string = "";
+  genero: string = "";
+  fecha_creacion?: Date;
 }
-
-

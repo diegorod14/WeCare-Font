@@ -1,0 +1,32 @@
+.example-card {
+  margin: 0 auto;
+  width: 600px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.error {
+  color: #f44336;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #ffebee;
+  border-radius: 4px;
+}
+
+.success {
+  color: #4caf50;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #e8f5e9;
+  border-radius: 4px;
+}
+

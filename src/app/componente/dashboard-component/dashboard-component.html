@@ -1,0 +1,50 @@
+<mat-card class="dashboard-card">
+  <div class="dashboard-layout">
+    <div class="panel panel-left">
+      <h1 class="title">Bienvenido {{ nombreUsuario }}</h1>
+
+      <div class="peso-section">
+        <div class="peso-header">
+          <div class="peso-title">Peso objetivo:</div>
+          <div class="peso-message">{{ pesoMensaje }}</div>
+        </div>
+
+        <mat-progress-bar class="peso-progress" mode="determinate" [value]="pesoProgress"></mat-progress-bar>
+
+        <div class="peso-values">
+          <span>{{ pesoActual | number : '1.0-2' }} kg</span>
+          <span>{{ pesoIdeal | number : '1.0-2' }} kg</span>
+        </div>
+      </div>
+
+      <div class="imc-section">
+        <div class="imc-label">IMC:</div>
+        <div class="imc-value">{{ imc | number : '1.0-2' }}</div>
+      </div>
+    </div>
+
+    <mat-divider vertical></mat-divider>
+
+    <div class="panel panel-right">
+      <div class="macros-top">
+        <div class="macros-bars">
+          <div class="macro-row" *ngFor="let m of macros">
+            <span class="macro-label">{{ m.label }}</span>
+            <mat-progress-bar class="macro-bar" mode="determinate" [value]="m.percent"></mat-progress-bar>
+            <span class="macro-value">{{ m.value | number : '1.0-2' }}</span>
+          </div>
+        </div>
+
+        <div class="macros-chart">
+          <div class="macro-pie" [style.background-image]="macroPieGradient"></div>
+        </div>
+      </div>
+
+      <div class="objetivo-section">
+        <div class="objetivo-titulo">Objetivo:</div>
+        <div class="objetivo-nombre">{{ objetivo?.nombre || 'Sin objetivo definido' }}</div>
+        <div class="objetivo-descripcion" *ngIf="objetivo?.descripcion">{{ objetivo.descripcion }}</div>
+      </div>
+    </div>
+  </div>
+</mat-card>

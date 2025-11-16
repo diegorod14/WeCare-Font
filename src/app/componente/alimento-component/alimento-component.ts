@@ -1,41 +1,21 @@
-import {Component, ViewChild, inject} from '@angular/core';
-import { NgIf } from '@angular/common';
-import {
-  MatCell,
-  MatCellDef,
-  MatColumnDef,
-  MatHeaderCell,
-  MatHeaderCellDef,
-  MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef,
-  MatTable, MatTableDataSource
-} from '@angular/material/table';
-import {MatPaginator} from '@angular/material/paginator';
-import {Alimento} from '../../model/alimento';
-import {AlimentoService} from '../../services/alimento-service';
-import {CategoriaService} from '../../services/categoria-service';
+import { Component, ViewChild, inject, OnInit, AfterViewInit } from '@angular/core';
+import { CommonModule, NgIf } from '@angular/common';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { Alimento } from '../../model/alimento';
+import { AlimentoService } from '../../services/alimento-service';
+import { CategoriaService } from '../../services/categoria-service';
 
 @Component({
   selector: 'app-alimento-component',
-  imports: [
-    NgIf,
-    MatHeaderCell,
-    MatTable,
-    MatColumnDef,
-    MatCell,
-    MatCellDef,
-    MatHeaderCellDef,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRowDef,
-    MatRow,
-    MatPaginator
-  ],
+  standalone: true,
+  imports: [CommonModule, NgIf, MatTableModule, MatPaginatorModule],
   templateUrl: './alimento-component.html',
-  styleUrl: './alimento-component.css',
+  styleUrls: ['./alimento-component.css'],
 })
-export class AlimentoComponent {
+export class AlimentoComponent implements OnInit, AfterViewInit {
   // Columnas: nombre del alimento, nombre de categoría y macronutrientes + calorías
-  displayedColumns: string[] = ['nombre', 'categoria', 'proteinas', 'carbohidratos', 'grasas', 'calorias'];
+  displayedColumns: string[] = ['nombre', 'categoria', 'proteina', 'carbohidrato', 'grasa', 'fibra', 'calorias'];
   dataSource = new MatTableDataSource<Alimento>();
 
   loading = false;
@@ -64,7 +44,7 @@ export class AlimentoComponent {
         this.categoriaService.findAll().subscribe({
           next: (cats) => {
             const byId = new Map<number, string>(cats.map(c => [c.idCategoria, c.nombre]));
-            const enriquecida = lista.map(a => {
+            this.dataSource.data = lista.map(a => {
               const id = a.categoria?.idCategoria ?? (a as any).idCategoria;
               if (id && (!a.categoria || !a.categoria.nombre)) {
                 a.categoria = a.categoria ?? { idCategoria: id, nombre: '', informacion: '' } as any;
@@ -72,7 +52,6 @@ export class AlimentoComponent {
               }
               return a;
             });
-            this.dataSource.data = enriquecida;
           },
           error: () => {
             // Si falla, al menos mostramos la lista tal cual

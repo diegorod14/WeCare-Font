@@ -1,0 +1,39 @@
+<div class="objetivos-wrapper">
+  <h1 class="titulo">Objetivos</h1>
+  <p class="subtitulo">¿Qué meta te propones seguir?</p>
+
+  <mat-grid-list cols="3" rowHeight="2:1" gutterSize="24">
+    <mat-grid-tile *ngFor="let objetivo of listaObjetivos">
+      <button
+        mat-raised-button
+        class="objetivo-card"
+        [ngClass]="{
+          selected: objetivo.id === seleccionado?.id
+        }"
+        (click)="seleccionarObjetivo(objetivo)"
+      >
+        <mat-icon class="objetivo-icon">
+          {{ getIconForObjetivo(objetivo) }}
+        </mat-icon>
+
+        <div class="objetivo-text">
+          <span class="objetivo-name">{{ objetivo.nombre }}</span>
+        </div>
+      </button>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <button
+    mat-raised-button
+    color="accent"
+    class="btn-guardar"
+    [disabled]="!seleccionado || isSaving"
+    (click)="guardarObjetivo()"
+  >
+    {{ isSaving ? 'Guardando…' : 'Guardar' }}
+  </button>
+
+  <p *ngIf="mensajeExito" class="mensaje-exito">{{ mensajeExito }}</p>
+  <p *ngIf="mensajeError" class="mensaje-error">{{ mensajeError }}</p>
+</div>
+

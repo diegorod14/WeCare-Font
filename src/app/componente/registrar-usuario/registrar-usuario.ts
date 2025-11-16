@@ -23,7 +23,6 @@ export class RegistrarUsuario {
   loading: boolean = false;
 
   onRegister(): void {
-    // Validaciones
     if (!this.validateForm()) {
       return;
     }
@@ -32,29 +31,54 @@ export class RegistrarUsuario {
     this.errorMessage = '';
     this.successMessage = '';
 
-    // Establecer fechas
-    this.user.fecha_creacion = new Date();
-    this.user.fecha_actualizacion = new Date();
+    // Preparar el objeto según el RegistrarUsuarioDTO del backend
+    const nuevoUsuario = {
+      username: this.user.username,
+      password: this.user.password,
+      nombres: this.user.nombres,
+      apellidos: this.user.apellidos,
+      genero: this.user.genero,
+      correo: this.user.correo,
+      celular: this.user.celular
+    };
 
-    // Guardar usuario
-    this.usuarioService.save(this.user).subscribe({
-      next: (savedUser: User) => {
+    console.log('Enviando datos de registro:', nuevoUsuario);
+
+    this.usuarioService.registrar(nuevoUsuario).subscribe({
+      next: (response) => {
         this.loading = false;
         this.successMessage = 'Usuario registrado exitosamente';
+        console.log('Usuario registrado:', response);
 
-        // Redirigir al login después de 2 segundos
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
+        // Siempre dirigir a login después del registro para flujo de autenticación
+        this.router.navigate(['/login']);
       },
       error: (error) => {
         this.loading = false;
-        if (error?.status === 409) {
+        console.error('Error al registrar usuario:', error);
+        console.error('Error completo:', JSON.stringify(error, null, 2));
+
+        // Manejar los errores específicos del backend
+        if (error?.status === 400) {
+          const errorMsg = error?.error || '';
+
+          if (typeof errorMsg === 'string' && errorMsg.includes('ModelMapper')) {
+            this.errorMessage = 'Error de configuración en el servidor. Contacte al administrador.';
+            console.error('Error de ModelMapper:', errorMsg);
+          } else if (typeof errorMsg === 'string' && errorMsg.includes('username ya existe')) {
+            this.errorMessage = 'El nombre de usuario ya está en uso';
+          } else if (typeof errorMsg === 'string' && errorMsg.includes('correo ya existe')) {
+            this.errorMessage = 'Este correo electrónico ya está registrado';
+          } else {
+            this.errorMessage = typeof errorMsg === 'string' ? errorMsg : 'Datos inválidos. Verifica el formulario.';
+          }
+        } else if (error?.status === 409) {
           this.errorMessage = 'El usuario o correo ya existe';
+        } else if (error?.status === 500) {
+          this.errorMessage = 'Error en el servidor. Intente nuevamente';
         } else {
           this.errorMessage = 'Error al registrar usuario. Intente nuevamente';
         }
-        console.error('Error en registro:', error);
       }
     });
   }
@@ -62,8 +86,14 @@ export class RegistrarUsuario {
   validateForm(): boolean {
     // Validar campos vacíos
     if (!this.user.username || !this.user.correo || !this.user.nombres ||
-        !this.user.apellido || !this.user.celular) {
+        !this.user.apellidos || !this.user.celular || !this.user.genero) {
       this.errorMessage = 'Todos los campos son obligatorios';
+      return false;
+    }
+
+    // Validar género
+    if (this.user.genero !== 'M' && this.user.genero !== 'F') {
+      this.errorMessage = 'Seleccione un género válido';
       return false;
     }
 
@@ -86,8 +116,8 @@ export class RegistrarUsuario {
       return false;
     }
 
-    // Validar celular
-    if (this.user.celular <= 0) {
+    // Validar celular (ahora es string)
+    if (!this.user.celular || this.user.celular.trim().length === 0) {
       this.errorMessage = 'Ingrese un número de celular válido';
       return false;
     }

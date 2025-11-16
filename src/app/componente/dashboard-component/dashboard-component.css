@@ -1,0 +1,185 @@
+.dashboard-card {
+  max-width: 1000px;
+  margin: 24px auto;
+  padding: 24px 32px;
+  border-radius: 20px;
+}
+
+.dashboard-layout {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 24px;
+}
+
+.panel {
+  flex: 1;
+}
+
+.panel-left {
+  padding-right: 16px;
+}
+
+.panel-right {
+  padding-left: 16px;
+}
+
+.title {
+  font-size: 2.1rem;
+  margin: 0 0 16px 0;
+}
+
+.peso-section {
+  margin-bottom: 32px;
+}
+
+.peso-header {
+  margin-bottom: 8px;
+}
+
+.peso-title {
+  font-weight: 600;
+  color: #2e7d32;
+  font-size: 1.1rem;
+}
+
+.peso-message {
+  color: #2e7d32;
+  font-size: 0.95rem;
+}
+
+.peso-progress {
+  height: 14px !important;
+  border-radius: 999px !important;
+  margin: 12px 0 4px;
+}
+
+.peso-progress ::ng-deep .mdc-linear-progress__bar-inner {
+  border-top-width: 14px !important;
+}
+
+.peso-values {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+.imc-section {
+  margin-top: 24px;
+}
+
+.imc-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.imc-value {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.macros-top {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+.macros-bars {
+  flex: 1;
+}
+
+.macro-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.macro-label {
+  width: 115px;
+  font-weight: 500;
+}
+
+.macro-bar {
+  flex: 1;
+  height: 8px !important;
+  border-radius: 999px !important;
+}
+
+.macro-bar ::ng-deep .mdc-linear-progress__bar-inner {
+  border-top-width: 8px !important;
+}
+
+.macro-value {
+  width: 60px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.macros-chart {
+  width: 190px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.macro-pie {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.macro-pie::after {
+  content: '';
+  position: absolute;
+  inset: 26%;
+  background: #fff;
+  border-radius: 50%;
+}
+
+.objetivo-section {
+  margin-top: 16px;
+}
+
+.objetivo-titulo {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.objetivo-nombre {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.objetivo-descripcion {
+  color: #555;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  mat-divider[vertical] {
+    display: none;
+  }
+
+  .panel-left,
+  .panel-right {
+    padding: 0;
+  }
+
+  .macros-top {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .macros-chart {
+    justify-content: flex-start;
+  }
+}
+
+
