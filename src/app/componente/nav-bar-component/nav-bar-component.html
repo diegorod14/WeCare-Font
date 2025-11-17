@@ -15,7 +15,6 @@
     }
     @if(esNutricionista()) {
       <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
-
     }
     @if(!esUsuario() && !esNutricionista()) {
     <button mat-raised-button [routerLink]="'/registro'">Registrar Usuario</button>
