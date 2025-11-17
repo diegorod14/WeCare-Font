@@ -26,7 +26,6 @@ export class NavBarComponent {
     }
     onLogout(): void {
       this.loginService.logout();
-      // Forzar actualización de la vista
       this.rol = null;
     }
 
