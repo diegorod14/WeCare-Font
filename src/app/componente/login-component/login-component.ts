@@ -64,7 +64,15 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('userId', String(userId));
         console.log('UserId extraído del JWT:', userId);
 
-        // Verificar si existe usuario-informacion para este userId
+        // Si es nutricionista, ir directo al home
+        const rol = localStorage.getItem('rol');
+        if (rol === 'ROLE_NUTRICIONISTA') {
+          console.log('Usuario NUTRICIONISTA, redirigiendo a /home');
+          this.router.navigate(['/home']);
+          return;
+        }
+
+        // Para usuarios regulares, verificar si existe usuario-informacion
         this.usuarioInformacionService.listId(userId).pipe(
           catchError((err) => {
             console.log('Error al buscar usuario-informacion:', err.status);
@@ -76,7 +84,7 @@ export class LoginComponent implements OnInit {
             console.log('No existe usuario-informacion, redirigiendo a /info');
             this.router.navigate(['/info']);
           } else {
-            console.log('Usuario-informacion existe, redirigiendo a /home');
+            console.log('Usuario-informacion existe, redirigiendo a /dashboard');
             this.router.navigate(['/dashboard']);
           }
         });
