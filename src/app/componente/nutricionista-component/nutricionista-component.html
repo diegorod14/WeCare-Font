@@ -1,40 +1,60 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" matSort>
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
-    <ng-container matColumnDef="biografia">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Biografia </th>
-      <td mat-cell *matCellDef="let element"> {{element.biografia}} </td>
-    </ng-container>
-    <ng-container matColumnDef="licensia_profesional">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Licencia Profesional </th>
-      <td mat-cell *matCellDef="let element"> {{element.licensia_profesional}} </td>
-    </ng-container>
-    <!-- Fecha Column -->
-    <ng-container matColumnDef="tarifa_consulta">
-      <th mat-header-cell *matHeaderCellDef> tarifa consulta </th>
-      <td mat-cell *matCellDef="let element"> {{element.tarifa_consulta}} </td>
-    </ng-container>
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="experiencia_anos">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Experiencia anos </th>
-      <td mat-cell *matCellDef="let element"> {{element.experiencia_anos}} </td>
-    </ng-container>
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="duracion_consulta_minutos">
-      <th mat-header-cell *matHeaderCellDef> Duracion consulta minutos </th>
-      <td mat-cell *matCellDef="let element"> {{element.duracion_consulta_minutos}} </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+<div class="nutri-wrapper">
 
-    </tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Select page of periodic elements">
-  </mat-paginator>
+  <h1 class="nutri-title">Elige a tu nutricionista</h1>
+  <p class="nutri-subtitle">
+    Utiliza el buscador para encontrar el nutricionista de tu preferencia
+  </p>
+
+  <!-- Buscador -->
+  <mat-form-field class="nutri-search" appearance="outline">
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      placeholder="Buscar"
+      (keyup)="onBuscar($event)"
+    />
+  </mat-form-field>
+
+  <!-- Tarjetas -->
+  <div class="nutri-card-container">
+    <mat-card class="nutri-card" *ngFor="let n of filteredNutricionistas">
+
+      <div class="nutri-img-wrapper">
+        <img
+          [src]="n.foto_perfil_url"
+          [alt]="'Foto de ' + n.nombre + ' ' + n.apellido"
+        />
+      </div>
+
+      <mat-card-content>
+        <div class="nutri-status">
+          <span class="dot"></span> Available
+        </div>
+
+        <div class="nutri-name">
+          Lic. {{ n.nombre }} {{ n.apellido }}
+        </div>
+
+        <div class="nutri-role">
+          {{ n.experiencia_anos }} años de experiencia
+        </div>
+
+        <p class="nutri-bio">
+          {{ n.biografia }}
+        </p>
+
+        <p class="nutri-price">
+          S/ {{ n.tarifa_consulta }} · {{ n.duracion_consulta_minutos }} min
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary">
+          Agendar cita
+        </button>
+      </mat-card-actions>
+
+    </mat-card>
+  </div>
+
 </div>

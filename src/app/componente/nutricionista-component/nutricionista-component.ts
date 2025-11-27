@@ -1,77 +1,60 @@
-import { Component, inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MatTable, MatTableDataSource, MatColumnDef,
-  MatCellDef, MatHeaderCellDef, MatHeaderCell, MatCell, MatHeaderRow, MatHeaderRowDef, MatRow, MatRowDef
-} from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { Router } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { NgFor, NgIf } from '@angular/common';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 import { Nutricionista } from '../../model/nutricionista';
 import { NutricionistaService } from '../../services/nutricionista-service';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-nutricionista-component',
+  standalone: true,
   imports: [
-    MatTable,
-    MatColumnDef,
-    MatSort,
-    MatSortHeader,
-    MatCellDef,
-    MatHeaderCellDef,
-    MatHeaderCell,
-    MatCell,
-    MatPaginator,
-    MatHeaderRow,
-    MatHeaderRowDef,
-    MatRow,
-    MatRowDef
+    NgFor,
+    NgIf,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './nutricionista-component.html',
   styleUrls: ['./nutricionista-component.css']
 })
 export class NutricionistaComponent implements OnInit {
-  lista: Nutricionista[] = [];
-  displayedColumns: string[] = ['id', 'licensia_profesional', 'biografia', 'tarifa_consulta', 'experiencia_anos', 'duracion_consulta_minutos'];
-  dataSource: MatTableDataSource<Nutricionista> = new MatTableDataSource<Nutricionista>();
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  nutricionistas: Nutricionista[] = [];
+  filteredNutricionistas: Nutricionista[] = [];
 
   nutricionistaService: NutricionistaService = inject(NutricionistaService);
-  route: Router = inject(Router);
-  dialog = inject(MatDialog);
 
-  constructor() {
-    console.log("Constructor NutricionistaComponent");
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-  }
-
-  ngOnInit() {
-    console.log('Component ngOnInit llamando al API Get');
-
-    // 🔹 Cargar todos los nutricionistas
+  ngOnInit(): void {
     this.nutricionistaService.findAll().subscribe({
-      next: (data: Nutricionista[]) => this.dataSource.data = data,
-      error: (err: any) => console.error('Error al obtener nutricionistas', err)
+      next: (data: Nutricionista[]) => {
+        this.nutricionistas = data;
+        this.filteredNutricionistas = data; // al inicio, se muestran todos
+      },
+      error: err => console.error('Error al obtener nutricionistas', err)
     });
+  }
 
-    const nutri: Nutricionista = {
-      id: 1,
-      licensia_profesional: 'ABC123',
-      biografia: 10,
-      tarifa_consulta: 50,
-      experiencia_anos: 5,
-      duracion_consulta_minutos: 30
-    };
+  onBuscar(event: Event): void {
+    const valor = (event.target as HTMLInputElement).value
+      .toLowerCase()
+      .trim();
 
-    this.nutricionistaService.update(nutri).subscribe({
-      next: (data: Nutricionista) => console.log('Actualizado:', data),
-      error: (err: any) => console.error('Error al actualizar:', err)
+    this.filteredNutricionistas = this.nutricionistas.filter(n => {
+      const texto = (
+        n.nombre + ' ' +
+        n.apellido + ' ' +
+        n.biografia + ' ' +
+        n.licensia_profesional
+      ).toLowerCase();
+      return texto.includes(valor);
     });
   }
 }
