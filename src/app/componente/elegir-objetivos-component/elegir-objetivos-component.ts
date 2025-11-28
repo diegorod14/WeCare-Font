@@ -23,15 +23,16 @@ import {Objetivo} from '../../model/objetivo';
     MatDialogModule
   ],
   templateUrl: './elegir-objetivos-component.html',
-  styleUrl: './elegir-objetivos-component.css',
+  styleUrls: ['./elegir-objetivos-component.css']
 })
 export class ElegirObjetivosComponent implements OnInit {
   listaObjetivos: Objetivo[] = [];
   seleccionado: Objetivo | null = null;
+  descripcionSeleccionada = '';
 
-  isSaving: boolean = false;
-  mensajeExito: string = '';
-  mensajeError: string = '';
+  isSaving = false;
+  mensajeExito = '';
+  mensajeError = '';
 
   private objetivoService = inject(ObjetivoServices);
   private usuarioObjetivoService = inject(UsuarioObjetivoServices);
@@ -40,10 +41,12 @@ export class ElegirObjetivosComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   ngOnInit() {
+    this.loadObjetivos();
+  }
+
+  private loadObjetivos() {
     this.objetivoService.findAll().subscribe({
-      next: (data) => {
-        this.listaObjetivos = data;
-      },
+      next: (data) => this.listaObjetivos = data || [],
       error: (err) => {
         console.error('Error al cargar objetivos', err);
         this.mensajeError = 'No se pudieron cargar los objetivos.';
@@ -53,11 +56,31 @@ export class ElegirObjetivosComponent implements OnInit {
 
   seleccionarObjetivo(objetivo: Objetivo) {
     this.seleccionado = objetivo;
+    this.mensajeError = '';
+    this.mensajeExito = '';
 
+    this.objetivoService.findById(objetivo.id).subscribe({
+      next: (detail) => {
+        const descripcion = this.obtenerDescripcion(detail);
+        if (!descripcion) {
+          this.mensajeError = 'No se encontró la descripción del objetivo en el servidor.';
+          return;
+        }
+        this.descripcionSeleccionada = descripcion;
+        this.openDescripcionDialog(objetivo.nombre);
+      },
+      error: (err) => {
+        console.error('Error obteniendo descripción del objetivo:', err);
+        this.mensajeError = 'No se pudo cargar la descripción del objetivo.';
+      }
+    });
+  }
+
+  private openDescripcionDialog(nombre: string) {
     this.dialog.open(ObjetivoDescripcionDialog, {
       data: {
-        nombre: objetivo.nombre,
-        descripcion: objetivo.descripcion || 'Este objetivo te ayudará a alcanzar tus metas de salud.'
+        nombre,
+        descripcion: this.descripcionSeleccionada
       },
       width: '400px'
     });
@@ -69,8 +92,7 @@ export class ElegirObjetivosComponent implements OnInit {
       return;
     }
 
-    const token = localStorage.getItem('token');
-    const userId = this.extractUserIdFromToken(token);
+    const userId = this.extractUserIdFromToken(localStorage.getItem('token'));
 
     if (!userId) {
       this.mensajeError = 'No se pudo obtener el usuario del token. Inicia sesión nuevamente.';
@@ -86,47 +108,30 @@ export class ElegirObjetivosComponent implements OnInit {
       objetivo_id: this.seleccionado.id
     };
 
-    console.log('Objetivo seleccionado:', this.seleccionado);
-    console.log('Payload a enviar:', payload);
-
     this.usuarioObjetivoService.insert(payload).subscribe({
-      next: (response) => {
-        console.log('Usuario-objetivo guardado:', response);
-
-        // Ahora crear usuario-ingesta con camelCase (backend espera dto.getUsuarioId)
-        const ingestaPayload = {
-          usuarioId: userId
-        };
-
-        console.log('Creando usuario-ingesta con payload:', ingestaPayload);
-
-        this.usuarioIngestaService.insert(ingestaPayload as any).subscribe({
-          next: (ingestaResponse) => {
-            this.isSaving = false;
-            this.mensajeExito = 'Objetivo e ingesta guardados correctamente. Redirigiendo...';
-            console.log('Usuario-ingesta creado:', ingestaResponse);
-            setTimeout(() => {
-              this.router.navigate(['/dashboard']);
-            }, 1500);
-          },
-          error: (errIngesta) => {
-            this.isSaving = false;
-            console.error('Error al crear usuario-ingesta:', errIngesta);
-            // Aunque falle la ingesta, igual redirigimos (el usuario ya tiene objetivo)
-            this.mensajeExito = 'Objetivo guardado. Redirigiendo...';
-            setTimeout(() => {
-              this.router.navigate(['/dashboard']);
-            }, 1500);
-          }
-        });
-      },
+      next: () => this.crearUsuarioIngesta(userId),
       error: (err) => {
         this.isSaving = false;
         console.error('Error al guardar objetivo:', err);
-        console.error('Payload enviado:', payload);
-        console.error('Status:', err?.status);
-        console.error('Error completo:', err?.error);
         this.mensajeError = 'Ocurrió un error al guardar el objetivo: ' + (err?.error?.message || err?.message || 'Error desconocido');
+      }
+    });
+  }
+
+  private crearUsuarioIngesta(userId: number) {
+    const ingestaPayload = {usuarioId: userId};
+
+    this.usuarioIngestaService.insert(ingestaPayload as any).subscribe({
+      next: () => {
+        this.isSaving = false;
+        this.mensajeExito = 'Objetivo e ingesta guardados correctamente. Redirigiendo...';
+        setTimeout(() => this.router.navigate(['/dashboard']), 1500);
+      },
+      error: (errIngesta) => {
+        this.isSaving = false;
+        console.error('Error al crear usuario-ingesta:', errIngesta);
+        this.mensajeExito = 'Objetivo guardado. Redirigiendo...';
+        setTimeout(() => this.router.navigate(['/dashboard']), 1500);
       }
     });
   }
@@ -142,6 +147,10 @@ export class ElegirObjetivosComponent implements OnInit {
       console.error('Error decodificando token:', e);
       return null;
     }
+  }
+
+  private obtenerDescripcion(data: Partial<Objetivo> | undefined | null): string {
+    return data?.descripcion || (data as any)?.informacion || (data as any)?.descripcionObjetivo || '';
   }
 
   getIconForObjetivo(objetivo: Objetivo): string {

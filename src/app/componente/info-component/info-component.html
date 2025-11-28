@@ -5,7 +5,10 @@
     <form [formGroup]="infoForm" class="form-container" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill">
         <mat-label>Fecha de Nacimiento</mat-label>
-        <input matInput type="date" formControlName="fechaNacimiento" />
+        <input matInput [matDatepicker]="picker" formControlName="fechaNacimiento" placeholder="MM/DD/YYYY" />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         <mat-error *ngIf="infoForm.get('fechaNacimiento')?.hasError('required')">La fecha de nacimiento es obligatoria</mat-error>
       </mat-form-field>
 

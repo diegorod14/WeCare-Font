@@ -7,6 +7,9 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCardModule} from '@angular/material/card';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, provideNativeDateAdapter} from '@angular/material/core';
+import {MatIconModule} from '@angular/material/icon';
 
 import {NivelActividad} from '../../model/nivel-actividad';
 import {NivelActividadService} from '../../services/nivel-actividad-service';
@@ -22,8 +25,12 @@ import {UsuarioInformacionService} from '../../services/usuario-informacion-serv
     MatInputModule,
     MatCardModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule
   ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './info-component.html',
   styleUrls: ['./info-component.css']
 })
@@ -71,6 +78,11 @@ export class InfoComponent implements OnInit {
 
     const v = this.infoForm.value;
 
+    // Normalizar fecha: si el control devuelve un objeto Date, convertir a YYYY-MM-DD
+    const fechaNacimientoVal = v.fechaNacimiento instanceof Date
+      ? v.fechaNacimiento.toISOString().split('T')[0]
+      : v.fechaNacimiento;
+
     // Extraer userId del JWT
     const token = localStorage.getItem('token');
     const userId = token ? this.extractUserIdFromToken(token) : null;
@@ -82,7 +94,7 @@ export class InfoComponent implements OnInit {
 
     const payload = {
       usuarioId: userId,
-      fechaNacimiento: v.fechaNacimiento,
+      fechaNacimiento: fechaNacimientoVal,
       alturaCm: Number(v.alturaCm),
       pesoKg: Number(v.pesoKg),
       nivelActividadId: Number(v.nivelActividadId)
