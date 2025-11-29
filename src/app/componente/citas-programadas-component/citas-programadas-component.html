@@ -1,34 +1,95 @@
 <div class="citas-container">
-  <h2>Citas Programadas</h2>
-  <div *ngIf="citas.length > 0; else noCitas">
-    <div class="citas-grid">
-      <div *ngFor="let cita of citas" class="cita-item">
-        <div class="cita-top-border"></div>
-        <div class="cita-info">
-          <span class="label">Fecha:</span>
-          <span class="value-highlight">{{ cita.fecha | date:'dd/MM/yyyy' }}</span>
-        </div>
-        <div class="cita-info">
-          <span class="label">Hora:</span>
-          <span>{{ cita.hora }}</span>
-        </div>
-        <div class="cita-info">
-          <span class="label">Estado:</span>
-          <span class="estado-badge" [ngClass]="'estado-' + cita.estado.toLowerCase()">{{ cita.estado }}</span>
-        </div>
-        <div class="cita-info">
-          <span class="label">Tipo:</span>
-          <span class="type-text">{{ cita.tipo_consulta }}</span>
-        </div>
-        <div class="cita-info full-width" *ngIf="cita.motivo_consulta">
-          <span class="label">Motivo:</span>
-          <span class="motivo-text">{{ cita.motivo_consulta }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <ng-template #noCitas>
-    <div class="no-citas">No hay citas programadas.</div>
-  </ng-template>
-</div>
 
+  <!-- 1. ENCABEZADO LIMPIO (Sin Card) -->
+  <div class="header-section">
+    <h1 class="citas-title">Citas Programadas</h1>
+    <p class="citas-subtitle">
+      Revisa las citas agendadas organizadas por usuario y fecha
+    </p>
+  </div>
+
+  <!-- 2. BUSCADOR CENTRADO -->
+  <div class="search-section">
+    <mat-form-field class="search-input" appearance="outline">
+      <mat-icon matPrefix>search</mat-icon>
+      <input matInput placeholder="Buscar usuario" (keyup)="onBuscar($event)" />
+    </mat-form-field>
+  </div>
+
+  <!-- ESTADO DE CARGA -->
+  <div *ngIf="isLoading" class="loading-message">Cargando citas...</div>
+
+  <!-- 3. LISTA DE ACORDEONES (Citas) -->
+  <div *ngIf="!isLoading && filteredCitasPorUsuario.length > 0; else noData" class="accordion-wrapper">
+
+    <mat-accordion multi="true">
+      <!-- Panel de Usuario -->
+      <mat-expansion-panel *ngFor="let grupo of filteredCitasPorUsuario" class="usuario-panel" hideToggle>
+
+        <mat-expansion-panel-header class="usuario-header">
+          <div class="header-content">
+            <div class="user-main-info">
+              <span class="usuario-name">{{ grupo.usuario.nombres }} {{ grupo.usuario.apellidos }}</span>
+              <span class="usuario-username">{{ '@' + grupo.usuario.username }}</span>
+            </div>
+            <span class="usuario-contact">
+              {{ grupo.usuario.correo }} · {{ grupo.usuario.celular }}
+            </span>
+            <mat-icon class="expand-icon">expand_more</mat-icon>
+          </div>
+        </mat-expansion-panel-header>
+
+        <div class="panel-body">
+          <!-- Bloque de Fechas -->
+          <div *ngFor="let grupoFecha of grupo.citasPorFecha" class="fecha-block">
+
+            <h3 class="fecha-subtle-title">
+              <mat-icon>calendar_today</mat-icon>
+              <!-- Ajusta el pipe de fecha según tu configuración local -->
+              {{ grupoFecha.fecha | date:'EEEE, d \'de\' MMMM \'de\' yyyy' }}
+            </h3>
+
+            <!-- Grid de Citas Horizontal -->
+            <div class="citas-grid">
+              <div *ngFor="let cita of grupoFecha.citas" class="cita-item">
+                <div class="cita-top-border"></div>
+
+                <div class="cita-info">
+                  <span class="label">HORA</span>
+                  <span class="value-time">{{ cita.hora }}</span>
+                </div>
+
+                <div class="cita-info">
+                  <span class="label">ESTADO</span>
+                  <span class="estado-badge" [ngClass]="'estado-' + cita.estado.toLowerCase()">
+                    {{ cita.estado }}
+                  </span>
+                </div>
+
+                <div class="cita-info">
+                  <span class="label">TIPO</span>
+                  <span class="type-text">{{ cita.tipo_consulta }}</span>
+                </div>
+
+                <div class="cita-info full-width" *ngIf="cita.motivo_consulta">
+                  <span class="label">MOTIVO</span>
+                  <span class="motivo-text">{{ cita.motivo_consulta }}</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+
+  </div>
+
+  <ng-template #noData>
+    <div class="no-citas">
+      <p>No se encontraron citas.</p>
+    </div>
+  </ng-template>
+
+</div>

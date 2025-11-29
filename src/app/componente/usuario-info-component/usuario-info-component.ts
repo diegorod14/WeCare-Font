@@ -42,6 +42,8 @@ export class UsuarioInfoComponent implements OnInit {
   nivelActividad?: NivelActividad;
 
   citasUsuario: any[] = [];
+  // Agrupación por fecha (día) para mostrar en la vista
+  citasPorFecha: { fecha: Date; fechaFormateada: string; citas: any[] }[] = [];
   nutricionistaId?: number;
 
   edad?: number;
@@ -145,7 +147,21 @@ export class UsuarioInfoComponent implements OnInit {
     if (this.nutricionistaId) {
       this.citaService.findByNutricionistaIdAndUsuarioId(this.nutricionistaId, this.usuarioId).subscribe({
         next: (citas: any[]) => {
-          this.citasUsuario = citas;
+          // Ordenar por fecha y luego por hora
+          this.citasUsuario = citas.sort((a, b) => {
+            // Primero ordenar por fecha
+            const fechaA = new Date(a.fecha).getTime();
+            const fechaB = new Date(b.fecha).getTime();
+
+            if (fechaA !== fechaB) {
+              return fechaA - fechaB;
+            }
+
+            // Si las fechas son iguales, ordenar por hora
+            return a.hora.localeCompare(b.hora);
+          });
+          // Agrupar por día para la vista
+          this.citasPorFecha = this.agruparCitasPorFecha(this.citasUsuario);
           console.log('Citas cargadas entre nutricionista y usuario:', this.citasUsuario);
         },
         error: (err: any) => console.error('Error cargando citas', err)
@@ -153,6 +169,38 @@ export class UsuarioInfoComponent implements OnInit {
     }
 
     this.isLoading = false;
+  }
+
+  private agruparCitasPorFecha(citas: any[]): { fecha: Date; fechaFormateada: string; citas: any[] }[] {
+    const mapa = new Map<string, any[]>();
+
+    citas.forEach(cita => {
+      const d = new Date(cita.fecha);
+      const key = d.toISOString().split('T')[0]; // YYYY-MM-DD
+      if (!mapa.has(key)) mapa.set(key, []);
+      mapa.get(key)!.push(cita);
+    });
+
+    const resultado: { fecha: Date; fechaFormateada: string; citas: any[] }[] = [];
+    mapa.forEach((citasDelDia, key) => {
+      const fecha = new Date(key);
+      // ordenar por hora dentro del día
+      citasDelDia.sort((a: any, b: any) => a.hora.localeCompare(b.hora));
+      resultado.push({ fecha, fechaFormateada: this.formatearFecha(fecha), citas: citasDelDia });
+    });
+
+    // ordenar por fecha ascendente
+    return resultado.sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
+  }
+
+  private formatearFecha(fecha: Date): string {
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const diaSemana = dias[fecha.getDay()];
+    const dia = fecha.getDate();
+    const mes = meses[fecha.getMonth()];
+    const anio = fecha.getFullYear();
+    return `${diaSemana}, ${dia} de ${mes} de ${anio}`;
   }
 
   private calcularEdad(fechaNacimiento: Date | string): number {

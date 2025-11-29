@@ -1,6 +1,10 @@
+/* 1. IMPORTAR LA FUENTE */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 :host {
   display: block;
   width: 100%;
+  /* 2. APLICAR AL COMPONENTE */
   font-family: 'Poppins', sans-serif;
 }
 
@@ -24,11 +28,13 @@ td.mat-cell {
   padding: 16px 10px !important;
   border-bottom: 1px solid #f5f5f5;
   vertical-align: middle;
+  /* 3. FORZAR EN CELDAS Y HEADERS */
+  font-family: 'Poppins', sans-serif !important;
 }
 
 th.mat-header-cell {
   background-color: #f4f6f4;
-  color: #111; /* negro para headers */
+  color: #111;
   font-size: 0.9rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -38,7 +44,7 @@ th.mat-header-cell {
 }
 
 td.mat-cell {
-  color: #111; /* negro para filas */
+  color: #111;
   font-size: 0.95rem;
 }
 
@@ -49,14 +55,14 @@ tr.mat-row:hover {
 .mat-column-id {
   width: 60px;
   text-align: center !important;
-  font-weight: 400; /* solo headers en negrita, filas normal */
+  font-weight: 400;
 }
 
 .mat-column-nombre {
   width: 20%;
   text-align: left !important;
   padding-left: 20px !important;
-  font-weight: 400; /* solo headers en negrita, filas normal */
+  font-weight: 400;
   color: #111;
 }
 
@@ -98,6 +104,8 @@ button {
   margin: 0 auto !important;
   box-shadow: 0 3px 5px rgba(0,0,0,0.15) !important;
   transition: transform 0.2s;
+  /* 4. FORZAR EN BOTONES */
+  font-family: 'Poppins', sans-serif !important;
 }
 
 ::ng-deep button .mat-button-wrapper {
@@ -136,6 +144,7 @@ tr.mat-no-data-row td {
   padding: 40px;
   text-align: center;
   color: #78909c;
+  font-family: 'Poppins', sans-serif;
 }
 
 mat-paginator {
@@ -143,6 +152,8 @@ mat-paginator {
   border-top: 1px solid #e0e0e0;
   color: #546e7a;
   font-weight: 500;
+  /* 5. FORZAR EN PAGINADOR */
+  font-family: 'Poppins', sans-serif !important;
 }
 
 ::ng-deep .mat-paginator-container {

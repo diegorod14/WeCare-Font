@@ -135,27 +135,30 @@
       <mat-card-title> Citas con el usuario </mat-card-title>
 
       <mat-card-content>
-        <div *ngIf="citasUsuario && citasUsuario.length > 0; else noCitasTpl">
-          <div class="citas-grid">
-            <div *ngFor="let cita of citasUsuario" class="cita-item">
-              <div class="cita-top-border"></div>
-              <div class="cita-info">
-                <span class="label">FECHA:</span>
-                <span class="value-highlight">{{ cita.fecha | date:'dd/MM/yyyy' }}</span>
-              </div>
-              <div class="cita-info">
-                <span class="label">HORA:</span>
-                <span>{{ cita.hora }}</span>
-              </div>
-              <div class="cita-info">
-                <span class="label">ESTADO:</span>
-                <span class="estado-badge" [ngClass]="'estado-' + cita.estado?.toLowerCase()">
-                  {{ cita.estado }}
-                </span>
-              </div>
-              <div class="cita-info">
-                <span class="label">TIPO:</span>
-                <span class="type-text">{{ cita.tipo_consulta }}</span>
+        <div *ngIf="citasPorFecha && citasPorFecha.length > 0; else noCitasTpl">
+          <div *ngFor="let grupo of citasPorFecha" class="fecha-block">
+            <h3 class="fecha-subtle-title">{{ grupo.fechaFormateada }}</h3>
+            <div class="citas-grid">
+              <div *ngFor="let cita of grupo.citas" class="cita-item">
+                <div class="cita-top-border"></div>
+                <div class="cita-info">
+                  <span class="label">HORA:</span>
+                  <span class="value-highlight">{{ cita.hora }}</span>
+                </div>
+                <div class="cita-info">
+                  <span class="label">ESTADO:</span>
+                  <span class="estado-badge" [ngClass]="'estado-' + cita.estado.toLowerCase()">
+                    {{ cita.estado }}
+                  </span>
+                </div>
+                <div class="cita-info">
+                  <span class="label">TIPO:</span>
+                  <span class="type-text">{{ cita.tipo_consulta }}</span>
+                </div>
+                <div class="cita-info full-width" *ngIf="cita.motivo_consulta">
+                  <span class="label">MOTIVO:</span>
+                  <span class="motivo-text">{{ cita.motivo_consulta }}</span>
+                </div>
               </div>
             </div>
           </div>
