@@ -8,22 +8,22 @@
   <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
     <div class="form-group">
       <label for="username">Usuario *</label>
-      <input class="form-control" id="username" name="username" type="text" [(ngModel)]="user.username" (focus)="clearMessages()" required minlength="3" [disabled]="loading">
+      <input class="form-control" id="username" name="username" type="text" [(ngModel)]="user.username" (focus)="clearMessages()" required minlength="3" [disabled]="loading" placeholder="Usuario" aria-label="Usuario">
     </div>
 
     <div class="form-group">
       <label for="nombres">Nombres *</label>
-      <input class="form-control" id="nombres" name="nombres" type="text" [(ngModel)]="user.nombres" (focus)="clearMessages()" required [disabled]="loading">
+      <input class="form-control" id="nombres" name="nombres" type="text" [(ngModel)]="user.nombres" (focus)="clearMessages()" required [disabled]="loading" placeholder="Nombres" aria-label="Nombres">
     </div>
 
     <div class="form-group">
       <label for="apellidos">Apellidos *</label>
-      <input class="form-control" id="apellidos" name="apellidos" type="text" [(ngModel)]="user.apellidos" (focus)="clearMessages()" required [disabled]="loading">
+      <input class="form-control" id="apellidos" name="apellidos" type="text" [(ngModel)]="user.apellidos" (focus)="clearMessages()" required [disabled]="loading" placeholder="Apellidos" aria-label="Apellidos">
     </div>
 
     <div class="form-group">
       <label for="genero">Género *</label>
-      <select class="form-control" id="genero" name="genero" [(ngModel)]="user.genero" (focus)="clearMessages()" required [disabled]="loading">
+      <select class="form-control" id="genero" name="genero" [(ngModel)]="user.genero" (focus)="clearMessages()" required [disabled]="loading" aria-label="Género">
         <option value="" disabled>Seleccione su género</option>
         <option value="M">Masculino</option>
         <option value="F">Femenino</option>
@@ -32,22 +32,22 @@
 
     <div class="form-group">
       <label for="correo">Correo Electrónico *</label>
-      <input class="form-control" id="correo" name="correo" type="email" [(ngModel)]="user.correo" (focus)="clearMessages()" required [disabled]="loading">
+      <input class="form-control" id="correo" name="correo" type="email" [(ngModel)]="user.correo" (focus)="clearMessages()" required [disabled]="loading" placeholder="ejemplo@correo.com" aria-label="Correo electrónico">
     </div>
 
     <div class="form-group">
       <label for="celular">Celular *</label>
-      <input class="form-control" id="celular" name="celular" type="text" placeholder="Ej: 987654321" [(ngModel)]="user.celular" (focus)="clearMessages()" required [disabled]="loading">
+      <input class="form-control" id="celular" name="celular" type="text" placeholder="Ej: 987654321" [(ngModel)]="user.celular" (focus)="clearMessages()" required [disabled]="loading" aria-label="Celular">
     </div>
 
     <div class="form-group">
       <label for="password">Contraseña *</label>
-      <input class="form-control" id="password" name="password" type="password" placeholder="Mínimo 6 caracteres" [(ngModel)]="user.password" (focus)="clearMessages()" required minlength="6" [disabled]="loading">
+      <input class="form-control" id="password" name="password" type="password" placeholder="Mínimo 6 caracteres" [(ngModel)]="user.password" (focus)="clearMessages()" required minlength="6" [disabled]="loading" aria-label="Contraseña">
     </div>
 
     <div class="form-group">
       <label for="confirmPassword">Confirmar Contraseña *</label>
-      <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" placeholder="Repite tu contraseña" [(ngModel)]="confirmPassword" (focus)="clearMessages()" required [disabled]="loading">
+      <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" placeholder="Repite tu contraseña" [(ngModel)]="confirmPassword" (focus)="clearMessages()" required [disabled]="loading" aria-label="Confirmar contraseña">
     </div>
 
     <div class="error-message" *ngIf="errorMessage">

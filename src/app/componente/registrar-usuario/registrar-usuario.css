@@ -62,7 +62,11 @@ select.form-control option{
   border-color:#34c759;
   box-shadow:0 0 0 3px rgba(52,199,89,.15);
 }
-.form-control::placeholder{color:transparent;}
+.form-control::placeholder{color:#9ca3af; opacity:1;}
+.form-control:-ms-input-placeholder{color:#9ca3af;}
+.form-control::-ms-input-placeholder{color:#9ca3af;}
+.form-control::-webkit-input-placeholder{color:#9ca3af;}
+.form-control::-moz-placeholder{color:#9ca3af; opacity:1;}
 .error-message,.success-message{
   display:flex;align-items:center;gap:8px;
   font-size:14px;border-radius:12px;padding:10px 12px;
