@@ -4,11 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import {Router, RouterLink} from '@angular/router';
 import {LoginService} from '../../services/login-service';
 import {Plato} from '../../model/plato';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-nav-bar-component',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, RouterLink],
+  imports: [MatToolbarModule, MatButtonModule, RouterLink, NgOptimizedImage],
   templateUrl: './nav-bar-component.html',
   styleUrl: './nav-bar-component.css',
 })

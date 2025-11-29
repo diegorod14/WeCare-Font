@@ -1,51 +1,50 @@
-<mat-card class="example-card">
-  <mat-card-title>Login</mat-card-title>
+<div class="main-container">
+  <div class="image-section">
+    <img src="assets/LandingPage.png" alt="Login">
+    <div class="overlay"></div>
+  </div>
 
-  <mat-card-content>
-    <form
-      [formGroup]="loginForm"
-      class="form-container"
-      (ngSubmit)="onSubmit()"
-    >
-      <mat-form-field appearance="fill">
-        <mat-label>Usuario</mat-label>
-        <input
-          matInput
-          formControlName="username"
-          placeholder="Ingrese su usuario"
-        />
-        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
-          El usuario es obligatorio
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('username')?.hasError('minlength')">
-          Mínimo 3 caracteres
-        </mat-error>
-      </mat-form-field>
+  <div class="form-section">
+    <div class="form-wrapper">
 
-      <mat-form-field appearance="fill">
-        <mat-label>Password</mat-label>
-        <input
-          matInput
-          type="password"
-          formControlName="password"
-          placeholder="Ingrese su contraseña"
-        />
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-          La contraseña es obligatoria
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-          Mínimo 6 caracteres
-        </mat-error>
-      </mat-form-field>
+      <div class="header">
+        <h1>Bienvenido</h1>
+        <p>Ingresa tus datos para continuar</p>
+      </div>
 
-      <button
-        type="submit"
-        mat-raised-button
-        [disabled]="loginForm.invalid"
-        [ngClass]="{ 'btn-enabled': loginForm.valid }"
-      >
-        Registrar
-      </button>
-    </form>
-  </mat-card-content>
-</mat-card>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <div class="input-group">
+          <label>Usuario</label>
+          <input type="text" formControlName="username" placeholder="Ingrese su usuario">
+          <div class="error-msg" *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched">
+            El usuario es obligatorio
+          </div>
+          <div class="error-msg" *ngIf="loginForm.get('username')?.hasError('minlength') && loginForm.get('username')?.touched">
+            Mínimo 3 caracteres
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Contraseña</label>
+          <input type="password" formControlName="password" placeholder="Ingrese su contraseña">
+          <div class="error-msg" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            La contraseña es obligatoria
+          </div>
+          <div class="error-msg" *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+            Mínimo 6 caracteres
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loginForm.invalid">
+          Ingresar
+        </button>
+
+        <div class="footer">
+          ¿No tienes cuenta? <a routerLink="/registro">Regístrate aquí</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

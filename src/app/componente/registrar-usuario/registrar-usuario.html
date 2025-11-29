@@ -1,74 +1,68 @@
-<div class="register-card">
-  <div class="register-header">
-    <img src="/logo.png" alt="MyCare">
-    <h1>Crear Cuenta</h1>
-    <p>Completa el formulario para registrarte</p>
+<div class="main-container">
+  <div class="image-section">
+    <img src="assets/Registrar.png" alt="Healthy Food">
+    <div class="overlay"></div>
   </div>
 
-  <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
-    <div class="form-group">
-      <label for="username">Usuario *</label>
-      <input class="form-control" id="username" name="username" type="text" [(ngModel)]="user.username" (focus)="clearMessages()" required minlength="3" [disabled]="loading" placeholder="Usuario" aria-label="Usuario">
+  <div class="form-section">
+    <div class="form-wrapper">
+
+      <div class="header">
+        <h1>Regístrate aquí</h1>
+        <p>Comienza tu vida saludable hoy mismo</p>
+      </div>
+
+      <form (ngSubmit)="onRegister()" #registerForm="ngForm">
+
+        <div class="input-group">
+          <label>Usuario *</label>
+          <input type="text" name="username" [(ngModel)]="user.username" required placeholder="Nombre de usuario">
+        </div>
+
+        <div class="row-split">
+          <div class="input-group input-half">
+            <label>Nombres *</label>
+            <input type="text" name="nombres" [(ngModel)]="user.nombres" required placeholder="Nombres">
+          </div>
+          <div class="input-group input-half">
+            <label>Apellidos *</label>
+            <input type="text" name="apellidos" [(ngModel)]="user.apellidos" required placeholder="Apellidos">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Género *</label>
+          <select name="genero" [(ngModel)]="user.genero" required>
+            <option value="" disabled selected>Seleccionar</option>
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Correo *</label>
+          <input type="email" name="correo" [(ngModel)]="user.correo" required placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="input-group">
+          <label>Celular *</label>
+          <input type="text" name="celular" [(ngModel)]="user.celular" required placeholder="999 999 999">
+        </div>
+
+        <div class="input-group">
+          <label>Contraseña *</label>
+          <input type="password" name="password" [(ngModel)]="user.password" required placeholder="******">
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="loading">
+          {{ loading ? 'Registrando...' : 'Registrarse' }}
+        </button>
+
+        <div class="footer">
+          ¿Ya tienes cuenta? <a (click)="goToLogin()">Inicia sesión</a>
+        </div>
+
+      </form>
     </div>
-
-    <div class="form-group">
-      <label for="nombres">Nombres *</label>
-      <input class="form-control" id="nombres" name="nombres" type="text" [(ngModel)]="user.nombres" (focus)="clearMessages()" required [disabled]="loading" placeholder="Nombres" aria-label="Nombres">
-    </div>
-
-    <div class="form-group">
-      <label for="apellidos">Apellidos *</label>
-      <input class="form-control" id="apellidos" name="apellidos" type="text" [(ngModel)]="user.apellidos" (focus)="clearMessages()" required [disabled]="loading" placeholder="Apellidos" aria-label="Apellidos">
-    </div>
-
-    <div class="form-group">
-      <label for="genero">Género *</label>
-      <select class="form-control" id="genero" name="genero" [(ngModel)]="user.genero" (focus)="clearMessages()" required [disabled]="loading" aria-label="Género">
-        <option value="" disabled>Seleccione su género</option>
-        <option value="M">Masculino</option>
-        <option value="F">Femenino</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="correo">Correo Electrónico *</label>
-      <input class="form-control" id="correo" name="correo" type="email" [(ngModel)]="user.correo" (focus)="clearMessages()" required [disabled]="loading" placeholder="ejemplo@correo.com" aria-label="Correo electrónico">
-    </div>
-
-    <div class="form-group">
-      <label for="celular">Celular *</label>
-      <input class="form-control" id="celular" name="celular" type="text" placeholder="Ej: 987654321" [(ngModel)]="user.celular" (focus)="clearMessages()" required [disabled]="loading" aria-label="Celular">
-    </div>
-
-    <div class="form-group">
-      <label for="password">Contraseña *</label>
-      <input class="form-control" id="password" name="password" type="password" placeholder="Mínimo 6 caracteres" [(ngModel)]="user.password" (focus)="clearMessages()" required minlength="6" [disabled]="loading" aria-label="Contraseña">
-    </div>
-
-    <div class="form-group">
-      <label for="confirmPassword">Confirmar Contraseña *</label>
-      <input class="form-control" id="confirmPassword" name="confirmPassword" type="password" placeholder="Repite tu contraseña" [(ngModel)]="confirmPassword" (focus)="clearMessages()" required [disabled]="loading" aria-label="Confirmar contraseña">
-    </div>
-
-    <div class="error-message" *ngIf="errorMessage">
-      <span class="error-icon">⚠️</span>
-      {{ errorMessage }}
-    </div>
-
-    <div class="success-message" *ngIf="successMessage">
-      <span class="success-icon">✓</span>
-      {{ successMessage }}
-    </div>
-
-    <button type="submit" class="btn btn-primary" [disabled]="loading || registerForm.invalid">
-      <span *ngIf="!loading">Registrarse</span>
-      <span *ngIf="loading" class="loading-spinner"><span class="spinner"></span>Registrando...</span>
-    </button>
-
-    <div class="divider"><span>o</span></div>
-
-    <button type="button" class="btn btn-secondary" (click)="goToLogin()" [disabled]="loading">
-      ¿Ya tienes cuenta? Inicia sesión
-    </button>
-  </form>
+  </div>
 </div>

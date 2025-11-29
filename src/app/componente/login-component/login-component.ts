@@ -1,9 +1,6 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {MatCard, MatCardContent, MatCardTitle} from '@angular/material/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {MatError, MatFormField, MatInput, MatLabel} from '@angular/material/input';
-import {MatButton} from '@angular/material/button';
-import {CommonModule, NgClass} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {RequestDto} from '../../model/request-dto';
 import {ResponseDto} from '../../model/response-dto';
 import {Router} from '@angular/router';
@@ -16,16 +13,7 @@ import {catchError, of} from 'rxjs';
   selector: 'app-login-component',
   imports: [
     CommonModule,
-    MatCard,
-    MatCardTitle,
-    MatCardContent,
-    ReactiveFormsModule,
-    MatFormField,
-    MatLabel,
-    MatInput,
-    MatButton,
-    MatError,
-    NgClass
+    ReactiveFormsModule
   ],
   templateUrl: './login-component.html',
   styleUrls: ['./login-component.css']

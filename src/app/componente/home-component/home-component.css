@@ -1,65 +1,250 @@
-:root {
-  --text: #0f172a;   /* slate-900 */
-  --muted: #475569;  /* slate-600 */
-  --bg: #ffffff;
-  --max: 1200px;
-  --radius: 18px;
+:host {
+  --primary-green: #81C784;
+  --dark-green: #388E3C;
+  --accent-green: #4CAF50;
+  --text-dark: #2c3e50;
+  --text-light: #546e7a;
 }
 
-.wrapper {
-  width: min(var(--max), 92%);
-  margin: 56px auto;
+.main-container {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--primary-green);
+  position: relative;
+  /* CLAVE: Ocupar exactamente el 100% de la altura y ocultar sobrantes */
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.white-curve-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 120%; /* Un poco más alto para asegurar cobertura al mover cosas */
+  background-color: #fff;
+  z-index: 0;
+  border-bottom-right-radius: 100% 80%;
+  box-shadow: 10px 0 30px rgba(0,0,0,0.05);
 }
 
 .hero {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
-  gap: clamp(24px, 6vw, 56px);
+  display: flex;
+  padding: 0 5%;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
   align-items: center;
+  position: relative;
+  z-index: 10;
+  /* CLAVE: Subimos todo el bloque un poco hacia arriba */
+  margin-top: -40px;
 }
 
-.copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* Mueve el bloque de texto un poco hacia la derecha en pantallas grandes */
-  padding-inline-start: clamp(24px, 6vw, 120px);
+.hero-text {
+  width: 45%; /* Reducido un poco para dar aire */
+  padding-right: 40px;
 }
 
 h1 {
-  font-weight: 800;
-  font-size: clamp(2rem, 4vw + 1rem, 4rem);
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  margin: 0 0 16px;
+  font-family: 'Playfair Display', serif;
+  /* Usamos 'vh' o clamp para que la letra no sea gigante en pantallas bajas */
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  line-height: 1.1;
+  color: var(--text-dark);
+  margin-bottom: 20px;
+  position: relative;
 }
 
-.lead {
-  font-size: clamp(1rem, 0.5vw + 0.9rem, 1.125rem);
-  color: var(--muted);
-  max-width: 46ch;
+h1::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 10px;
+  bottom: 10px;
+  width: 5px;
+  background-color: var(--accent-green);
+  opacity: 0.7;
+  border-radius: 4px;
 }
 
-.figure {
-  border-radius: var(--radius);
+h1 .highlight {
+  color: var(--dark-green);
+}
+
+.hero-text p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-size: 1rem;
+  max-width: 440px;
+}
+
+.cta-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.cta-btn {
+  background-color: var(--accent-green);
+  color: white;
+  padding: 12px 40px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cta-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(76, 175, 80, 0.5);
+  background-color: var(--dark-green);
+}
+
+.login-prompt {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-left: 10px;
+}
+
+.login-link {
+  color: var(--text-dark);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+/* IMAGEN DERECHA */
+.hero-image {
+  width: 55%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plate {
+  /* CLAVE: El tamaño depende de la altura de la pantalla (vh) */
+  width: 450px;
+  height: 450px;
+  max-width: 45vh; /* Nunca será más grande que el 45% de la altura de la pantalla */
+  max-height: 45vh;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.12);
+  position: relative;
+  z-index: 2;
   overflow: hidden;
-  box-shadow: 0 20px 60px rgba(2, 6, 23, 0.15);
+  transition: transform 0.4s ease-out;
 }
 
-.figure img {
-  display: block;
+.plate:hover {
+  transform: scale(1.03) rotate(2deg);
+}
+
+.plate img {
+  width: 93%;
+  height: 93%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.bg-elements {
+  position: absolute;
   width: 100%;
-  height: auto;
+  height: 100%;
+  z-index: 1;
 }
 
+/* La tabla se ajusta proporcionalmente al plato */
+.cutting-board {
+  position: absolute;
+  width: 60%; /* Relativo al contenedor */
+  height: 80%;
+  background-color: #E67E22;
+  top: 50%;
+  left: 50%;
+  transform: translate(-55%, -55%) rotate(-15deg);
+  border-radius: 28px;
+  opacity: 0.7;
+  z-index: -1;
+}
+
+/* ANIMACIONES (Igual que antes) */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+.animate-entrance .hero-text > * {
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards;
+}
+
+.stagger-1 { animation-delay: 0.2s; }
+.stagger-2 { animation-delay: 0.4s; }
+.stagger-3 { animation-delay: 0.6s; }
+
+.hero-image.stagger-image-pop {
+  opacity: 0;
+  animation: popIn 1s cubic-bezier(0.175, 0.885, 0.320, 1.275) forwards;
+  animation-delay: 0.5s;
+}
+
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .wrapper {
-    margin: 32px auto;
+  /* En móviles sí permitimos scroll si es necesario, pero intentamos ajustar */
+  .main-container {
+    height: 100vh; /* Intentamos mantenerlo */
+    min-height: 600px; /* Pero con un mínimo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
+
+  .white-curve-bg {
+    width: 100%;
+    height: 45vh;
+    border-radius: 0 0 50% 50% / 0 0 30% 30%;
+  }
+
   .hero {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    flex-direction: column-reverse;
+    text-align: center;
+    margin-top: 0;
+    gap: 20px;
   }
-  /* Quitar el padding en móviles para usar todo el ancho */
-  .copy { padding-inline-start: 0; }
+
+  .hero-text {
+    width: 100%;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 { font-size: 2.5rem; }
+  h1::before { display: none; }
+
+  .plate {
+    width: 35vh;
+    height: 35vh;
+  }
 }

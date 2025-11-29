@@ -1,11 +1,30 @@
-<main class="wrapper">
-  <section class="hero" aria-labelledby="t">
-    <div class="copy">
-      <h1 id="t">Planifica tu dieta,<br>cuida tu salud</h1>
-      <p class="lead">Gestiona tu salud y mejora tu alimentación en nuestra app.</p>
+<div class="main-container">
+  <div class="white-curve-bg"></div>
+
+  <section class="hero animate-entrance">
+    <div class="hero-text">
+      <h1 class="stagger-1">Eres <br> <span class="highlight">Lo Que Comes.</span></h1>
+      <p class="stagger-2">
+        Comer alimentos saludables sigue siendo una parte importante para mantener tu salud.
+        Se trata de tener más energía, mejorar tu salud y vivir felizmente.
+      </p>
+
+      <div class="cta-group stagger-3">
+        <button class="cta-btn" routerLink="/registro">Regístrate</button>
+        <div class="login-prompt">
+          <span>¿Ya tienes cuenta?</span>
+          <a routerLink="/login" class="login-link">Iniciar Sesión</a>
+        </div>
+      </div>
     </div>
-    <figure class="figure">
-      <img src="/LandingPage.png" alt="Persona usando una app de dietas junto a un bowl de ensalada" />
-    </figure>
+
+    <div class="hero-image stagger-image-pop">
+      <div class="bg-elements">
+        <div class="cutting-board"></div>
+      </div>
+      <div class="plate">
+        <img ngSrc="assets/LandingPage1.png" width="800" height="800" alt="Plato de comida saludable">
+      </div>
+    </div>
   </section>
-</main>
+</div>

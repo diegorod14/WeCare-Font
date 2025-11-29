@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../../services/user-service';
@@ -10,14 +10,13 @@ import { User } from '../../model/user';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './registrar-usuario.html',
-  styleUrl: './registrar-usuario.css',
+  styleUrls: ['./registrar-usuario.css'],
 })
 export class RegistrarUsuario {
   private usuarioService = inject(UsuarioService);
   private router = inject(Router);
 
   user: User = new User();
-  confirmPassword: string = '';
   errorMessage: string = '';
   successMessage: string = '';
   loading: boolean = false;
@@ -28,6 +27,7 @@ export class RegistrarUsuario {
     }
 
     this.loading = true;
+    // Clear any existing messages
     this.errorMessage = '';
     this.successMessage = '';
 
@@ -103,12 +103,6 @@ export class RegistrarUsuario {
       return false;
     }
 
-    // Validar confirmación de contraseña
-    if (this.user.password !== this.confirmPassword) {
-      this.errorMessage = 'Las contraseñas no coinciden';
-      return false;
-    }
-
     // Validar email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.user.correo.toString())) {
@@ -133,10 +127,5 @@ export class RegistrarUsuario {
 
   goToLogin(): void {
     this.router.navigate(['/login']);
-  }
-
-  clearMessages(): void {
-    this.errorMessage = '';
-    this.successMessage = '';
   }
 }
