@@ -1,14 +1,14 @@
 :host {
   display: flex;
   justify-content: center;
-  align-items: center; /* Centrado vertical si hay espacio */
+  align-items: center;
   padding: 20px;
   width: 100%;
   font-family: 'Poppins', sans-serif;
 }
 
 .example-card {
-  max-width: 600px; /* Un poco más ancho para que quepan 2 columnas */
+  max-width: 600px;
   width: 100%;
   padding: 30px;
   border-radius: 20px;
@@ -26,20 +26,17 @@ mat-card-title {
   margin-bottom: 25px !important;
 }
 
-/* --- LAYOUT DE GRILLA (La parte mágica) --- */
 .form-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Crea 2 columnas iguales */
-  column-gap: 20px; /* Espacio horizontal entre inputs */
-  row-gap: 5px;     /* Espacio vertical pequeño (el padding del input hace el resto) */
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  row-gap: 5px;
 }
 
-/* El PRIMER mat-form-field (Nombre) ocupa las 2 columnas */
 mat-form-field:first-of-type {
   grid-column: span 2;
 }
 
-/* El ÚLTIMO mat-form-field (Categoría) ocupa las 2 columnas */
 mat-form-field:nth-last-of-type(1) {
   grid-column: span 2;
 }
@@ -49,7 +46,6 @@ mat-form-field {
   font-size: 0.9rem;
 }
 
-/* --- ESTILOS VISUALES (Outline Style) --- */
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: #e0e0e0;
 }
@@ -66,21 +62,18 @@ mat-form-field {
   color: #4CAF50;
 }
 
-/* Color del texto dentro del input */
 input, mat-select {
   color: #333;
 }
 
-/* --- BOTONES --- */
 .actions {
-  grid-column: span 2; /* Los botones ocupan todo el ancho */
+  grid-column: span 2;
   display: flex;
-  justify-content: flex-end; /* Alineados a la derecha */
+  justify-content: flex-end;
   gap: 15px;
   margin-top: 20px;
 }
 
-/* Botón Guardar (Principal) */
 button[type="submit"] {
   background-color: #4CAF50;
   color: white;
@@ -102,7 +95,6 @@ button[type="submit"]:disabled {
   box-shadow: none;
 }
 
-/* Botón Limpiar (Secundario) */
 button[type="button"] {
   color: #757575;
   font-weight: 500;
@@ -122,10 +114,9 @@ button[type="button"]:hover {
   margin-top: 10px;
 }
 
-/* Responsive: En móviles volvemos a una sola columna */
 @media (max-width: 600px) {
   .form-container {
-    grid-template-columns: 1fr; /* 1 columna */
+    grid-template-columns: 1fr;
   }
 
   mat-form-field:first-of-type,

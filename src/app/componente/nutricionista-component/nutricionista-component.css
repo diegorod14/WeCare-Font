@@ -1,5 +1,9 @@
+:host {
+  display: block;
+}
+
 .nutri-wrapper {
-  max-width: 1200px;
+  max-width: 1350px;
   margin: 0 auto;
   padding: 40px 16px 60px;
 }
@@ -27,7 +31,7 @@
 .nutri-card-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px;
   justify-content: center;
 }
 
@@ -38,26 +42,45 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  min-height: 500px;
+  min-height: 480px;
+  background: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s;
+}
+
+.nutri-card:hover {
+  transform: translateY(-5px);
 }
 
 .nutri-img-wrapper {
   background: #f4f7ff;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  height: 230px;
+  height: 220px;
+  overflow: hidden;
 }
 
 .nutri-img-wrapper img {
-  height: 210px;
+  height: 200px;
+  width: 100%;
   object-fit: contain;
+  object-position: bottom;
+}
+
+.nutri-card mat-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
 }
 
 .nutri-status {
   font-size: 12px;
   color: #28a745;
-  margin-top: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .nutri-status .dot {
@@ -66,52 +89,91 @@
   height: 8px;
   border-radius: 50%;
   background: #28a745;
-  margin-right: 4px;
+  margin-right: 6px;
 }
 
 .nutri-name {
-  margin-top: 4px;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
 }
 
+/* 1. AÑOS DE EXPERIENCIA */
 .nutri-role {
-  font-size: 12px;
+  font-size: 13px;
   color: #777;
-  margin-bottom: 8px;
+  font-weight: 500;
+  /* CAMBIO: Quitamos el margen inferior para que la Bio controle el espacio */
+  margin-bottom: 0;
 }
 
+/* 2. BIOGRAFÍA (Aquí ocurre la magia) */
 .nutri-bio {
-  font-size: 12px;
+  font-size: 13px;
   color: #555;
-  min-height: 48px;
+  line-height: 1.5;
+  /* CAMBIO: Justificar texto */
+  text-align: justify;
+  /* Opcional: Agrega guiones automáticos para que el justificado no deje huecos grandes */
+  hyphens: auto;
+  /* CAMBIO: Espaciado idéntico arriba y abajo */
+  margin-top: 14px;
+  margin-bottom: 14px;
+  /* Mantener el recorte de texto si es muy largo */
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 4; /* Puedes ajustar a 3 si quieres que se vea menos texto */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* 3. TARIFA / PRECIO */
 .nutri-price {
-  font-size: 13px;
-  font-weight: 500;
-  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #444;
+  /* CAMBIO: Si quieres que esté PEGADO a la bio (con los 14px de espacio), pon esto en 0.
+     Si prefieres que el precio siempre esté al fondo de la tarjeta, deja 'margin-top: auto'
+     pero ten en cuenta que el espacio variará según el largo de la bio.
+     Para tu pedido de "espacio igual", lo pondremos en 0 o auto según prefieras la alineación.
+     Opción A (Espacio exacto fijo): margin-top: 0;
+     Opción B (Precio al fondo): margin-top: auto;
+   */
+  margin-top: 0;
 }
 
-.nutri-card mat-card-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.nutri-card-actions,
-.nutri-card mat-card-actions {
-  margin-top: auto;
+.nutri-card-actions {
   display: flex;
   justify-content: center;
-  padding-bottom: 20px;
+  padding: 0 16px 24px;
+  margin-top: auto;
 }
 
-.nutri-card mat-card-actions button {
-  min-width: 140px;
+.nutri-card-actions button {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #e0e0e0 !important;
+  border-radius: 50px !important;
+  padding: 8px 32px !important;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+.nutri-card-actions button:hover {
+  background-color: #ffffff !important;
+  color: #4caf50 !important;
+  border: 1.5px solid #4caf50 !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2) !important;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .nutri-card {
+    width: 100%;
+    max-width: 300px;
+  }
 }

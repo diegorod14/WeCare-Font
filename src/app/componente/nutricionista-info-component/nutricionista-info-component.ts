@@ -18,8 +18,8 @@ interface DialogResult extends CitaDialogData {
 }
 
 interface DiaAgenda {
-  etiquetaDia: string;   // MON, TUE...
-  numeroDia: number;     // 10, 11...
+  etiquetaDia: string;
+  numeroDia: number;
   fecha: Date;
   seleccionado: boolean;
 }
@@ -54,6 +54,9 @@ export class NutricionistaInfoComponent implements OnInit {
   diasAgenda: DiaAgenda[] = [];
   horasAgenda: HoraAgenda[] = [];
 
+  private citasNutri: any[] = [];
+  isSlotTaken = false;
+
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
@@ -68,8 +71,24 @@ export class NutricionistaInfoComponent implements OnInit {
   // ----- Cargar nutricionista -----
   cargarNutricionista(id: number): void {
     this.nutricionistaService.listId(id).subscribe({
-      next: (data: Nutricionista) => this.nutricionista = data,
+      next: (data: Nutricionista) => {
+        this.nutricionista = data;
+        // Cargar las citas del nutricionista para poder validar conflictos
+        this.loadCitasNutricionista();
+      },
       error: err => console.error('Error al cargar nutricionista', err)
+    });
+  }
+
+  // Carga todas las citas y filtra las que pertenecen al nutricionista actual
+  private loadCitasNutricionista(): void {
+    if (!this.nutricionista) return;
+    this.citaService.list().subscribe({
+      next: (data: any[]) => {
+        this.citasNutri = (data || []).filter(c => c.nutricionistaId === this.nutricionista?.id);
+        this.checkSlotAvailability();
+      },
+      error: err => console.error('Error cargando citas', err)
     });
   }
 
@@ -109,11 +128,31 @@ export class NutricionistaInfoComponent implements OnInit {
   seleccionarDia(dia: DiaAgenda): void {
     this.diasAgenda.forEach(d => d.seleccionado = false);
     dia.seleccionado = true;
+    // Re-evaluar disponibilidad cuando cambia el día
+    this.checkSlotAvailability();
   }
 
   seleccionarHora(hora: HoraAgenda): void {
     this.horasAgenda.forEach(h => h.seleccionado = false);
     hora.seleccionado = true;
+    // Re-evaluar disponibilidad cuando cambia la hora
+    this.checkSlotAvailability();
+  }
+
+  // Determina si el slot seleccionado (día+hora) ya tiene una cita
+  private checkSlotAvailability(): void {
+    const diaSeleccionado = this.diasAgenda.find(d => d.seleccionado);
+    const horaSeleccionada = this.horasAgenda.find(h => h.seleccionado);
+
+    if (!diaSeleccionado || !horaSeleccionada || !this.nutricionista) {
+      this.isSlotTaken = false;
+      return;
+    }
+
+    const fechaStr = this.formatFecha(diaSeleccionado.fecha);
+    const horaStr = this.toHora24(horaSeleccionada.etiqueta);
+
+    this.isSlotTaken = this.citasNutri.some(c => c.fecha === fechaStr && c.hora === horaStr);
   }
 
   // ---------- helpers para armar Cita ----------
@@ -143,6 +182,10 @@ export class NutricionistaInfoComponent implements OnInit {
   // ---------- Agendar cita ----------
 
   agendar(): void {
+    if (this.isSlotTaken) {
+      alert('Este horario ya está ocupado. Elige otro.');
+      return;
+    }
     const diaSeleccionado = this.diasAgenda.find(d => d.seleccionado);
     const horaSeleccionada = this.horasAgenda.find(h => h.seleccionado);
 
@@ -196,6 +239,8 @@ export class NutricionistaInfoComponent implements OnInit {
      this.citaService.insert(citaPayload).subscribe({
        next: () => {
          alert('Tu cita ha sido agendada correctamente');
+         // Actualizar cache y re-evaluar disponibilidad
+         this.loadCitasNutricionista();
        },
        error: (err) => {
          console.error('Error al crear cita', err);
@@ -204,4 +249,3 @@ export class NutricionistaInfoComponent implements OnInit {
      });
    }
  }
-

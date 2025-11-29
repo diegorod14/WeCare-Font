@@ -1,0 +1,34 @@
+<div class="citas-container">
+  <h2>Citas Programadas</h2>
+  <div *ngIf="citas.length > 0; else noCitas">
+    <div class="citas-grid">
+      <div *ngFor="let cita of citas" class="cita-item">
+        <div class="cita-top-border"></div>
+        <div class="cita-info">
+          <span class="label">Fecha:</span>
+          <span class="value-highlight">{{ cita.fecha | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="cita-info">
+          <span class="label">Hora:</span>
+          <span>{{ cita.hora }}</span>
+        </div>
+        <div class="cita-info">
+          <span class="label">Estado:</span>
+          <span class="estado-badge" [ngClass]="'estado-' + cita.estado.toLowerCase()">{{ cita.estado }}</span>
+        </div>
+        <div class="cita-info">
+          <span class="label">Tipo:</span>
+          <span class="type-text">{{ cita.tipo_consulta }}</span>
+        </div>
+        <div class="cita-info full-width" *ngIf="cita.motivo_consulta">
+          <span class="label">Motivo:</span>
+          <span class="motivo-text">{{ cita.motivo_consulta }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noCitas>
+    <div class="no-citas">No hay citas programadas.</div>
+  </ng-template>
+</div>
+

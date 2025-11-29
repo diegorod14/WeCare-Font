@@ -2,69 +2,67 @@
   <mat-card class="dashboard-card">
     <div class="dashboard-content">
 
-      <!-- LADO IZQUIERDO: Bienvenida, Peso, IMC -->
       <div class="panel-left">
         <div class="welcome-section">
-          <h1>Bienvenido, {{ nombreUsuario }}</h1>
+          <h1>Hola, {{ nombreUsuario }}</h1>
 
           <div class="goal-group">
-            <span class="goal-label">Peso objetivo:</span>
             <p class="motivation-text">{{ pesoMensaje }}</p>
           </div>
 
-          <!-- Barra de Peso Personalizada -->
-          <div class="weight-container">
-            <div class="weight-bar-bg">
-              <div class="weight-bar-fill" [style.width.%]="pesoProgress"></div>
+          <div class="weight-cards-container">
+            <div class="weight-box current">
+              <span class="w-label">PESO ACTUAL</span>
+              <span class="w-value">{{ pesoActual | number:'1.0-1' }} <small>kg</small></span>
             </div>
-            <div class="weight-labels">
-              <span class="current-weight">
-                <strong>{{ pesoActual | number:'1.0-1' }}</strong> kg
-              </span>
-              <span class="target-weight">
-                <strong>{{ pesoIdeal | number:'1.0-1' }}</strong> kg
-              </span>
+            <div class="weight-box target">
+              <span class="w-label">PESO IDEAL</span>
+              <span class="w-value">{{ pesoIdeal | number:'1.0-1' }} <small>kg</small></span>
             </div>
           </div>
         </div>
 
         <div class="imc-section">
-          <span class="imc-label">IMC:</span>
+          <span class="imc-label">Tu IMC:</span>
           <div class="imc-number">{{ imc | number:'1.2-2' }}</div>
         </div>
       </div>
 
-      <!-- DIVISOR VERTICAL VISUAL -->
       <div class="vertical-separator"></div>
 
-      <!-- LADO DERECHO: Macros y Gráfico -->
       <div class="panel-right">
 
-        <div class="macros-list">
-          <div class="macro-item" *ngFor="let m of macros">
-            <span class="macro-name">{{ m.label }}</span>
-
-            <!-- Barra pequeña de color -->
-            <div class="mini-bar-track">
-              <div class="mini-bar-fill"
-                   [style.background-color]="m.color"
-                   [style.width.%]="m.key === 'calorias' ? 100 : m.percent * 3"> <!-- Multiplicador visual -->
-              </div>
-            </div>
-
-            <span class="macro-val">{{ m.value | number:'1.0-1' }}</span>
-          </div>
-
-          <div class="objective-info">
-            <span class="obj-label">Objetivo:</span>
-            <span class="obj-val">{{ objetivo.nombre || 'Cargando...' }}</span>
+        <div class="calories-header">
+          <span class="cal-label">INGESTA DIARIA</span>
+          <div class="cal-value">
+            {{ totalCalorias | number:'1.0-0' }} <span>Kcal</span>
           </div>
         </div>
 
-        <!-- GRÁFICO CIRCULAR -->
-        <div class="chart-container">
-          <div class="donut-chart" [style.background]="macroPieGradient">
-            <div class="center-white"></div>
+        <div class="macros-container">
+
+          <div class="macros-list">
+            <div class="macro-item" *ngFor="let m of macros">
+              <div class="macro-indicator" [style.background-color]="m.color"></div>
+              <div class="macro-details">
+                <span class="macro-name">{{ m.label }}</span>
+                <span class="macro-val">
+                  {{ m.value | number:'1.0-1' }}g
+                  <small class="pct">({{ m.percent | number:'1.0-0' }}%)</small>
+                </span>
+              </div>
+            </div>
+
+            <div class="objective-info">
+              <span class="obj-label">Objetivo:</span>
+              <span class="obj-val">{{ objetivo.nombre || 'Cargando...' }}</span>
+            </div>
+          </div>
+
+          <div class="chart-wrapper">
+            <div class="donut-chart" [style.background]="macroPieGradient">
+              <div class="center-white"></div>
+            </div>
           </div>
         </div>
 

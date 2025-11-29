@@ -11,9 +11,10 @@ import { UsuarioIngestaService } from '../../services/usuario-ingesta-service';
 import { UsuarioObjetivoServices } from '../../services/usuario-objetivo-services';
 import { ObjetivoServices } from '../../services/objetivo-services';
 import { MatCard, MatCardContent, MatCardSubtitle, MatCardTitle } from '@angular/material/card';
-import { CommonModule, DecimalPipe, NgIf } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { NivelActividadService } from '../../services/nivel-actividad-service';
 import { UsuarioService } from '../../services/user-service';
+import { CitaService } from '../../services/cita-service';
 
 @Component({
   selector: 'app-usuario-info',
@@ -26,7 +27,6 @@ import { UsuarioService } from '../../services/user-service';
     MatCardTitle,
     MatCard,
     MatCardSubtitle,
-    DecimalPipe,
     NgIf
   ]
 })
@@ -40,6 +40,9 @@ export class UsuarioInfoComponent implements OnInit {
 
   usuario?: User;
   nivelActividad?: NivelActividad;
+
+  citasUsuario: any[] = [];
+  nutricionistaId?: number;
 
   edad?: number;
 
@@ -64,13 +67,25 @@ export class UsuarioInfoComponent implements OnInit {
     private usuarioObjetivoService: UsuarioObjetivoServices,
     private objetivoService: ObjetivoServices,
     private nivelActividadService: NivelActividadService,
-    private usuarioService: UsuarioService
+    private usuarioService: UsuarioService,
+    private citaService: CitaService
   ) {}
 
   ngOnInit(): void {
     this.usuarioId = Number(this.route.snapshot.paramMap.get('id'));
-
+    this.nutricionistaId = this.extractNutricionistaIdFromToken();
     this.cargarDatos();
+  }
+
+  private extractNutricionistaIdFromToken(): number | undefined {
+    const token = localStorage.getItem('token');
+    if (!token) return undefined;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.nutricionistaId || payload.userId;
+    } catch {
+      return undefined;
+    }
   }
 
   private cargarDatos(): void {
@@ -126,6 +141,16 @@ export class UsuarioInfoComponent implements OnInit {
           }
         }
       });
+
+    if (this.nutricionistaId) {
+      this.citaService.findByNutricionistaIdAndUsuarioId(this.nutricionistaId, this.usuarioId).subscribe({
+        next: (citas: any[]) => {
+          this.citasUsuario = citas;
+          console.log('Citas cargadas entre nutricionista y usuario:', this.citasUsuario);
+        },
+        error: (err: any) => console.error('Error cargando citas', err)
+      });
+    }
 
     this.isLoading = false;
   }

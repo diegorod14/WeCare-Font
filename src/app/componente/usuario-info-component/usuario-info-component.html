@@ -40,9 +40,10 @@
            <span>{{ nivelActividad?.nombre }}</span>
          </div>
 
-         <div class="info-line" *ngIf="nivelActividad?.informacion">
-           <span class="label">Descripción actividad:</span>
-           <span>{{ nivelActividad?.informacion }}</span>
+
+         <div class="info-line">
+           <span class="label">Objetivo seleccionado:</span>
+           <span>{{ objetivoDetalle?.nombre || 'Sin objetivo' }}</span>
          </div>
        </mat-card-content>
     </mat-card>
@@ -129,16 +130,40 @@
     </mat-card>
   </div>
 
-  <!-- FILA INFERIOR: cuadro azul grande -->
   <div class="cards-row">
     <mat-card class="card objetivo-card">
-      <mat-card-title> Objetivo del usuario </mat-card-title>
+      <mat-card-title> Citas con el usuario </mat-card-title>
 
       <mat-card-content>
-        <div class="info-line">
-          <span class="label">Objetivo seleccionado:</span>
-          <span>{{ objetivoDetalle?.nombre || 'Sin objetivo' }}</span>
+        <div *ngIf="citasUsuario && citasUsuario.length > 0; else noCitasTpl">
+          <div class="citas-grid">
+            <div *ngFor="let cita of citasUsuario" class="cita-item">
+              <div class="cita-top-border"></div>
+              <div class="cita-info">
+                <span class="label">FECHA:</span>
+                <span class="value-highlight">{{ cita.fecha | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="cita-info">
+                <span class="label">HORA:</span>
+                <span>{{ cita.hora }}</span>
+              </div>
+              <div class="cita-info">
+                <span class="label">ESTADO:</span>
+                <span class="estado-badge" [ngClass]="'estado-' + cita.estado?.toLowerCase()">
+                  {{ cita.estado }}
+                </span>
+              </div>
+              <div class="cita-info">
+                <span class="label">TIPO:</span>
+                <span class="type-text">{{ cita.tipo_consulta }}</span>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <ng-template #noCitasTpl>
+          <div class="no-citas">No hay citas registradas.</div>
+        </ng-template>
       </mat-card-content>
     </mat-card>
   </div>

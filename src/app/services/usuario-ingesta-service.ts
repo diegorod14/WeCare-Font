@@ -26,13 +26,8 @@ export class UsuarioIngestaService {
     return this.http.post<UsuarioIngesta>(this.url + "/usuario-ingesta", usuarioIngesta);
   }
 
-  // backward-compatible alias used by some components
-  save(usuarioIngesta: UsuarioIngesta): Observable<UsuarioIngesta>{
-    return this.insert(usuarioIngesta);
-  }
-
-  update(usuarioId: number, usuarioIngesta: UsuarioIngesta): Observable<UsuarioIngesta>{
-    return this.http.put<UsuarioIngesta>(this.url + "/usuario-ingesta/" + usuarioId, usuarioIngesta);
+  update(usuarioId: number): Observable<UsuarioIngesta>{
+    return this.http.put<UsuarioIngesta>(this.url + "/usuario-ingesta/" + usuarioId, {});
   }
 
   delete(usuarioId: number): Observable<any> {

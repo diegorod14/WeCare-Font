@@ -1,43 +1,83 @@
-@import '@angular/material/prebuilt-themes/indigo-pink.css';
-
-mat-toolbar {
+/* NAVBAR BASE */
+.professional-nav {
   background-color: #4caf50 !important;
+  color: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+  height: 64px;
 }
 
+/* MARCA */
 .brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   text-decoration: none;
   color: #ffffff;
+  margin-right: 30px; /* Separación con el menú */
 }
 
 .logo {
   width: 32px;
   height: 32px;
   object-fit: contain;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
 }
 
 .brand-text {
   font-size: 20px;
   font-weight: 700;
-  line-height: 1;
+  letter-spacing: -0.5px;
 }
 
+/* CONTENEDOR DE ITEMS (Sirve tanto para izq como der) */
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre botones */
+}
+
+/* ENLACES NORMALES (Estado inactivo) */
+.nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9) !important; /* Texto casi blanco */
+  background-color: transparent;
+  min-width: auto !important;
+  padding: 0 16px !important;
+  border-radius: 20px !important; /* Bordes redondeados modernos */
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15); /* Hover sutil */
+  color: #ffffff !important;
+}
+
+/* --- CLASE ACTIVA (LA MAGIA) --- */
+/* Cuando estás en la sección, se aplica esto automáticamente */
+.active-white {
+  background-color: #ffffff !important; /* Fondo Blanco */
+  color: #2e7d32 !important; /* Texto Verde (Primary Dark) */
+  font-weight: 700 !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ESPACIADOR */
 .spacer {
   flex: 1 1 auto;
 }
 
-button[mat-raised-button] {
-  margin: 0 6px;
-  background: #ffffff;
-  color: #2e7d32 !important;
-  border-radius: 999px;
-  padding: 0 14px;
+/* BOTÓN SETTINGS */
+.settings-btn {
+  color: white;
+  margin-left: 10px;
 }
 
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .brand-text { font-size: 18px; }
-  .logo { width: 28px; height: 28px; }
-  button[mat-raised-button] { margin: 0 4px; padding: 0 10px; }
+  .brand-text { font-size: 18px; margin-right: 10px; }
+  .nav-link { padding: 0 10px !important; font-size: 12px; }
+  .brand { margin-right: 10px; }
 }

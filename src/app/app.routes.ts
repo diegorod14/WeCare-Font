@@ -14,6 +14,8 @@ import {NutricionistaComponent} from './componente/nutricionista-component/nutri
 import {NutricionistaInfoComponent} from './componente/nutricionista-info-component/nutricionista-info-component';
 import {UsuarioComponent} from './componente/usuario-component/usuario-component';
 import { UsuarioInfoComponent } from './componente/usuario-info-component/usuario-info-component';
+import {ConfiguracionComponent} from './componente/configuracion-component/configuracion-component';
+import { CitasProgramadasComponent } from './componente/citas-programadas-component/citas-programadas-component';
 
 export const routes: Routes = [
   {path: 'Alimento', component: AlimentoComponent},
@@ -30,8 +32,10 @@ export const routes: Routes = [
   {path: 'ListaNutricionista', component: NutricionistaComponent },
   {path: 'usuarios', component: UsuarioComponent},
   {path: 'nutricionista/:id', component: NutricionistaInfoComponent},
-  {path: 'home', component: HomeComponent},
   { path: 'usuarioinfo/:id', component: UsuarioInfoComponent },
+  { path: 'config', component: ConfiguracionComponent },
+  {path: 'citas-programadas', component: CitasProgramadasComponent},
+  {path: 'home', component: HomeComponent},
   {path: '', component: HomeComponent, pathMatch: 'full'}
 
 ];

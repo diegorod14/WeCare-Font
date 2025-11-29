@@ -1,305 +1,368 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
+/* --- CONTENEDOR PRINCIPAL --- */
 .usuario-info-page {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px 40px;
+  padding: 40px 24px;
   box-sizing: border-box;
-  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f5f7fb;
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+  background-color: #f8fafc;
+  min-height: 100vh;
 }
 
+/* BOTÓN REGRESAR */
+.back-button {
+  margin-bottom: 24px;
+  padding: 10px 24px;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.back-button:hover {
+  background: #f1f5f9;
+  color: #334155;
+  transform: translateX(-3px);
+}
+
+/* --- ESTRUCTURA DE TARJETAS --- */
 .cards-row {
   display: flex;
   gap: 24px;
   margin-bottom: 24px;
+  align-items: stretch;
 }
 
-.top-row .info-card {
-  flex: 0 0 34%;
-}
-
-.top-row .macros-card {
-  flex: 1;
-}
+.top-row .info-card { flex: 0 0 35%; }
+.top-row .macros-card { flex: 1; }
 
 .card {
-  border-radius: 26px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-  padding: 22px 26px;
+  border-radius: 24px !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04) !important;
+  padding: 28px !important;
   background: #fff;
+  border: 1px solid #f1f5f9;
+  transition: transform 0.2s ease;
 }
 
-.info-card {
-  border: 2px solid #19b5ff;
-  background: #f3fbff;
-}
-
-.macros-card {
-  border: 2px solid #ff4d4f;
-  background: #fff5f5;
-}
-
-.objetivo-card {
-  border: 2px solid #4a6bff;
-  background: #f5f7ff;
+/* Títulos generales */
+.card mat-card-title {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   width: 100%;
+  display: block;
+  padding-bottom: 12px;
+  border-bottom: 2px solid;
+  margin-bottom: 24px;
 }
 
-.card .mat-mdc-card-title {
-  text-align: center;
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 4px;
+/* Tarjeta de información */
+.info-card mat-card-title {
+  color: #0284c7;
+  border-bottom-color: #e0f2fe;
 }
 
-.card .mat-mdc-card-subtitle {
-  text-align: center;
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 12px;
-  color: #555;
-}
-
-.macros-header {
-  display: flex;
+/* Tarjeta de macros */
+.macros-card mat-card-title.macros-header {
+  color: #dc2626;
+  border-bottom: 2px solid #fee2e2 !important;
+  display: flex !important;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: 4px;
+  margin-bottom: 20px !important;
 }
 
 .macros-title {
-  flex: 0 0 auto;
-  text-align: center;
-  width: 100%;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
 }
 
 .imc-tag {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 13px;
-  font-weight: 600;
-  background: #ffffff;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #ff4d4f;
+  position: static !important;
+  margin: 0 !important;
+  transform: none !important;
+
+  font-size: 12px;
+  font-weight: 700;
+  background: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
   white-space: nowrap;
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- TARJETA INFO USUARIO (Celeste) --- */
+.info-card {
+  border-top: 5px solid #3b82f6;
+  background: linear-gradient(to bottom, #eff6ff, #ffffff 30%);
+}
+
+.card mat-card-subtitle {
+  font-size: 16px;
+  color: #475569;
+  margin-bottom: 24px;
+  font-weight: 600;
+  text-align: left !important;
+}
+
+.info-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 14px;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.info-line:last-child { border-bottom: none; }
+
+.info-line .label { font-weight: 600; color: #64748b; }
+.info-line span:last-child { color: #0f172a; font-weight: 600; text-align: right; max-width: 60%; }
+
+/* --- TARJETA MACROS (Roja) --- */
+.macros-card {
+  border-top: 5px solid #ef4444;
+  background: linear-gradient(to bottom, #fef2f2, #ffffff 30%);
+}
+
+.macros-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.imc-tag {
+  position: static !important;
+  margin: 0 !important;
+  transform: none !important;
+
+  font-size: 12px;
+  font-weight: 700;
+  background: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #fee2e2;
+  color: #dc2626;
+  white-space: nowrap;
+  display: flex;
   align-items: center;
   gap: 6px;
 }
 
 .macros-subtitle {
-  text-align: center !important;
-  display: block;
-  margin-bottom: 16px;
-}
-
-.back-button {
-  margin-bottom: 18px;
-  padding: 6px 18px;
-  border-radius: 999px;
-  border: 1px solid #19b5ff;
-  background: #e7f6ff;
-  color: #026aa7;
-  font-weight: 500;
-  font-size: 13px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.18s ease-in-out;
-}
-
-.back-button:hover {
-  background: #d2eeff;
-  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.12);
-}
-
-.info-card mat-card-content {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-.info-line {
-  display: grid;
-  grid-template-columns: 170px 1fr;
-  column-gap: 8px;
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.info-line .label {
-  font-weight: 600;
-  color: #111827;
-}
-
-.info-line span:last-child {
-  color: #111827;
-}
-
-.imc-tag {
-  font-size: 13px;
-  font-weight: 600;
-  background: #ffffff;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid #ff4d4f;
-  margin-left: 8px;
-  white-space: nowrap;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.imc-category {
-  font-weight: 500;
-  font-size: 12px;
-  color: #374151;
+  font-size: 18px !important; /* Reducido para que sea sutil */
+  font-weight: 600 !important;
+  color: #64748b !important; /* Gris suave */
+  text-align: left !important;
+  margin-bottom: 30px;
 }
 
 .macros-container {
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  column-gap: 32px;
+  display: flex;
   align-items: center;
-  margin-top: 8px;
+  justify-content: space-around;
+  gap: 40px;
 }
 
-.chart-section {
-  display: flex;
-  justify-content: center;
-}
+.chart-section { position: relative; }
 
 .donut-chart {
-  width: 165px;
-  height: 165px;
+  width: 200px;
+  height: 200px;
   border-radius: 50%;
   position: relative;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
 .center-hole {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 88px;
-  height: 88px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9);
 }
 
-.total-kcal {
-  font-weight: 700;
-  font-size: 22px;
-}
+.total-kcal { font-weight: 800; font-size: 32px; line-height: 1; color: #1e293b; }
+.unit { font-size: 13px; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-top: 4px; }
 
-.unit {
-  font-size: 11px;
-  color: #6b7280;
-}
-
-.legend-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.legend-indicator {
-  width: 14px;
-  height: 14px;
-  border-radius: 4px;
-}
-
-.legend-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.legend-label {
-  font-weight: 600;
-  font-size: 13px;
-  color: #111827;
-}
-
-.legend-value {
-  font-size: 12px;
-  color: #4b5563;
-}
+.legend-section { display: flex; flex-direction: column; gap: 18px; min-width: 220px; }
+.legend-item { display: flex; align-items: center; gap: 12px; }
+.legend-indicator { width: 16px; height: 16px; border-radius: 6px; flex-shrink: 0; }
+.legend-text { display: flex; flex-direction: column; }
+.legend-label { font-size: 14px; font-weight: 600; color: #64748b; }
+.legend-value { font-size: 16px; font-weight: 700; color: #0f172a; }
 
 .macro-extra {
   display: flex;
   justify-content: center;
-  gap: 32px;
-  margin-top: 20px;
-  font-size: 14px;
+  gap: 60px;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
 }
 
-.extra-item .label {
+.extra-item { display: flex; flex-direction: column; align-items: center; }
+.extra-item .label { font-size: 13px; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+.extra-item span:last-child { font-size: 20px; font-weight: 800; color: #334155; }
+.peso-up { color: #16a34a !important; }
+.peso-down { color: #dc2626 !important; }
+
+/* --- TARJETA CITAS --- */
+.objetivo-card {
+  border-top: 5px solid #6366f1;
+  width: 100%;
+}
+
+/* CAMBIO 3: GRID DE CITAS HORIZONTAL */
+.citas-grid {
+  display: grid;
+  /* Esto obliga a poner columnas al costado de minimo 200px */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+  align-items: start; /* Importante para que no se estiren verticalmente */
+}
+
+/* --- TARJETA INDIVIDUAL DE CITA --- */
+.cita-item {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+  height: auto; /* Para que mida solo lo necesario */
+}
+
+.cita-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  border-color: #6366f1;
+}
+
+/* BORDE SUPERIOR AZUL */
+.cita-top-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #6366f1;
+}
+
+/* --- TEXTOS INTERNOS --- */
+.cita-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cita-info .label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.cita-info span {
+  font-size: 15px;
   font-weight: 600;
-  margin-right: 4px;
+  color: #334155;
 }
 
-.peso-up {
+/* Resaltar la fecha */
+.value-highlight {
+  color: #1e293b !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+}
+
+.type-text {
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px !important;
+}
+
+/* BADGES DE ESTADO */
+.estado-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px !important;
+  font-weight: 700;
+  width: fit-content;
+}
+
+.estado-programada {
+  background: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+
+.estado-pendiente {
+  background: #ffedd5;
+  color: #ea580c;
+  border: 1px solid #fed7aa;
+}
+
+.estado-completada {
+  background: #dcfce7;
   color: #16a34a;
-  font-weight: 600;
+  border: 1px solid #bbf7d0;
 }
 
-.peso-down {
+.estado-cancelada {
+  background: #fee2e2;
   color: #dc2626;
-  font-weight: 600;
+  border: 1px solid #fecaca;
 }
 
-.objetivo-card .mat-mdc-card-title {
-  margin-bottom: 10px;
-}
+/* UTILS */
+.loading, .no-citas { text-align: center; padding: 50px; color: #64748b; font-weight: 500; background: #f8fafc; border-radius: 12px; margin-top: 10px; }
 
-.objetivo-card mat-card-content {
-  padding-top: 4px;
-}
-
-.loading {
-  padding: 40px;
-  text-align: center;
-  font-size: 16px;
-}
-
+/* RESPONSIVE */
 @media (max-width: 900px) {
-  .usuario-info-page {
-    padding-inline: 16px;
-  }
+  .usuario-info-page { padding: 20px 16px; }
+  .cards-row { flex-direction: column; }
+  .top-row .info-card { flex: auto; }
+  .macros-container { flex-direction: column; gap: 30px; }
+  .macros-header { flex-direction: column; align-items: flex-start; }
+  .imc-tag { position: relative; top: auto; right: auto; margin-top: 10px; }
+  .macro-extra { flex-direction: column; gap: 20px; align-items: center; }
 
-  .cards-row {
-    flex-direction: column;
-  }
-
-  .top-row .info-card,
-  .top-row .macros-card {
-    flex: 1 1 auto;
-  }
-
-  .macros-container {
-    grid-template-columns: 1fr;
-    row-gap: 20px;
-  }
-
-  .legend-section {
-    align-items: flex-start;
-  }
+  /* En móvil las citas vuelven a ser una lista vertical */
+  .citas-grid { grid-template-columns: 1fr; }
 }

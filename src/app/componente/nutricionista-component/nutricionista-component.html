@@ -15,11 +15,14 @@
     />
   </mat-form-field>
 
-  <!-- Tarjetas -->
+  <!-- Contenedor de Tarjetas -->
   <div class="nutri-card-container">
+
+    <!-- Inicio del ngFor -->
     <mat-card class="nutri-card" *ngFor="let n of filteredNutricionistas">
 
       <div class="nutri-img-wrapper">
+        <!-- Imagen del nutricionista -->
         <img
           [src]="n.foto_perfil_url"
           [alt]="'Foto de ' + n.nombre + ' ' + n.apellido"
@@ -27,34 +30,43 @@
       </div>
 
       <mat-card-content>
+        <!-- Estado -->
         <div class="nutri-status">
           <span class="dot"></span> Available
         </div>
 
+        <!-- Nombre -->
         <div class="nutri-name">
           Lic. {{ n.nombre }} {{ n.apellido }}
         </div>
 
+        <!-- Experiencia -->
         <div class="nutri-role">
           {{ n.experiencia_anos }} años de experiencia
         </div>
 
+        <!-- Biografía corta -->
         <p class="nutri-bio">
           {{ n.biografia }}
         </p>
 
+        <!-- Precio y Duración -->
         <p class="nutri-price">
           S/ {{ n.tarifa_consulta }} · {{ n.duracion_consulta_minutos }} min
         </p>
       </mat-card-content>
 
-      <mat-card-actions>
-        <button mat-raised-button color="primary" (click)="verDetalle(n.id)">
+      <!-- Acciones (Botón personalizado) -->
+      <!-- AQUÍ ESTÁ EL CAMBIO: Agregamos la clase y quitamos el color="primary" -->
+      <mat-card-actions class="nutri-card-actions">
+        <button mat-raised-button (click)="verDetalle(n.id)">
           Agendar cita
         </button>
       </mat-card-actions>
 
     </mat-card>
+    <!-- Fin del ngFor -->
+
   </div>
 
 </div>

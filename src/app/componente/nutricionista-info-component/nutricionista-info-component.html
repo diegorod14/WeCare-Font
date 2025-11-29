@@ -81,9 +81,12 @@
         color="primary"
         class="btn-agendar"
         (click)="agendar()"
+        [disabled]="isSlotTaken"
+        [class.opacado]="isSlotTaken"
       >
         Agendar
       </button>
+      <div *ngIf="isSlotTaken" class="slot-taken-msg">Ya existe una cita en este horario</div>
     </div>
   </div>
 

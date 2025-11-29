@@ -1,27 +1,55 @@
-<mat-toolbar color="primary">
+<mat-toolbar class="professional-nav">
   <mat-toolbar-row>
+
     <a class="brand" [routerLink]="'/'">
       <img ngSrc="assets/Logo.png" alt="MyCare" class="logo" height="1024" width="1024"/>
       <span class="brand-text">MyCare</span>
     </a>
+
+    @if(esUsuario() || esNutricionista()) {
+      <div class="nav-items left">
+
+        @if(esUsuario()) {
+          <a mat-button class="nav-link" routerLink="/dashboard" routerLinkActive="active-white">Dashboard</a>
+          <a mat-button class="nav-link" routerLink="/Plato" routerLinkActive="active-white">Platos</a>
+          <a mat-button class="nav-link" routerLink="/nuevo-edit" routerLinkActive="active-white">Nuevo Plato</a>
+          <a mat-button class="nav-link" routerLink="/ListaNutricionista" routerLinkActive="active-white">Nutricionistas</a>
+        }
+
+        @if(esNutricionista()) {
+          <a mat-button class="nav-link" routerLink="/usuarios" routerLinkActive="active-white">Usuarios</a>
+          <a mat-button class="nav-link" routerLink="/Alimento" routerLinkActive="active-white">Alimentos</a>
+          <a mat-button class="nav-link" routerLink="/NuevoAlimento" routerLinkActive="active-white">Nuevo Alimento</a>
+          <a mat-button class="nav-link" routerLink="/citas-programadas" routerLinkActive="active-white">Citas Programadas</a>
+        }
+      </div>
+    }
+
     <span class="spacer"></span>
-    @if(esUsuario()) {
-    <button mat-raised-button [routerLink]="'/dashboard'">Dashboard</button>
-    <button mat-raised-button [routerLink]="'/Plato'"> Platos </button>
-    <button mat-raised-button [routerLink]="'/nuevo-edit'">Nuevo Plato</button>
-    <button mat-raised-button [routerLink]="'/ListaNutricionista'">Nutricionistas</button>
-      <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
-    }
-    @if(esNutricionista()) {
-      <button mat-raised-button [routerLink]="'/usuarios'">Usuarios</button>
-      <button mat-raised-button [routerLink]="'/Alimento'">Alimentos</button>
-      <button mat-raised-button [routerLink]="'/NuevoAlimento'">Nuevo Alimento</button>
-      <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
-    }
+
     @if(!esUsuario() && !esNutricionista()) {
-    <button mat-raised-button [routerLink]="'/registro'">Registrar Usuario</button>
-    <button mat-raised-button [routerLink]="'/login'">Iniciar Sesión</button>
+      <div class="nav-items right">
+        <a mat-button class="nav-link" routerLink="/registro" routerLinkActive="active-white">Registrarse</a>
+        <a mat-button class="nav-link" routerLink="/login" routerLinkActive="active-white">Iniciar Sesión</a>
+      </div>
     }
+
+    @if(esUsuario() || esNutricionista()) {
+      <button mat-icon-button [matMenuTriggerFor]="settingsMenu" class="settings-btn">
+        <mat-icon>settings</mat-icon>
+      </button>
+
+      <mat-menu #settingsMenu="matMenu">
+      @if(esUsuario()) {
+        <button mat-menu-item [routerLink]="'/config'">
+          <mat-icon>person</mat-icon><span>Mi Perfil</span>
+        </button>
+      }
+        <button mat-menu-item (click)="onLogout()">
+          <mat-icon>logout</mat-icon><span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+    }
+
   </mat-toolbar-row>
 </mat-toolbar>
-

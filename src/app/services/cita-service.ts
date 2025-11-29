@@ -49,4 +49,16 @@ export class CitaService {
       error: (err) => console.error('Error actualizando lista citas', err),
     });
   }
+
+  findByNutricionistaId(nutricionistaId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/nutricionista/${nutricionistaId}/citas`);
+  }
+
+  findByUsuarioId(usuarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/usuario/${usuarioId}/citas`);
+  }
+
+  findByNutricionistaIdAndUsuarioId(nutricionistaId: number, usuarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.url}/nutricionista/${nutricionistaId}/usuario/${usuarioId}/citas`);
+  }
 }

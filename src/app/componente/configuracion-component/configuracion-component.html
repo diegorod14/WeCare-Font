@@ -1,0 +1,117 @@
+<div class="config-page">
+  <div class="config-container">
+
+    <div class="profile-header-card">
+      <div class="profile-avatar">
+        <mat-icon>person</mat-icon>
+      </div>
+      <div class="profile-info">
+        <h1>{{ user.nombres }} {{ user.apellidos }}</h1>
+        <p class="username">{{ '@' + user.username }}</p>
+
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="stat-value">{{ edad }}</span>
+            <span class="stat-label">Años</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">{{ usuarioInfo.pesoKg }}kg</span>
+            <span class="stat-label">Peso</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">{{ imc }}</span>
+            <span class="stat-label">IMC</span>
+          </div>
+        </div>
+      </div>
+
+      <button mat-fab class="edit-fab" (click)="toggleEdit()" [color]="isEditing ? 'warn' : 'primary'">
+        <mat-icon>{{ isEditing ? 'close' : 'edit' }}</mat-icon>
+      </button>
+    </div>
+
+    <mat-card class="form-card">
+      <h2 class="section-title">Datos Personales</h2>
+
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombres</mat-label>
+          <input matInput [(ngModel)]="user.nombres" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Apellidos</mat-label>
+          <input matInput [(ngModel)]="user.apellidos" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input matInput [(ngModel)]="user.correo" disabled>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Celular</mat-label>
+          <input matInput [(ngModel)]="user.celular" [disabled]="!isEditing">
+        </mat-form-field>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-title">Información Física</h2>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="usuarioInfo.fechaNacimiento" [disabled]="!isEditing">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Altura (cm)</mat-label>
+          <input matInput type="number" [(ngModel)]="usuarioInfo.alturaCm" [disabled]="!isEditing">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Peso Actual (kg)</mat-label>
+          <input matInput type="number" [(ngModel)]="usuarioInfo.pesoKg" [disabled]="!isEditing">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nivel de Actividad</mat-label>
+          <mat-select [(ngModel)]="usuarioInfo.nivelActividadId" [disabled]="!isEditing">
+            <mat-option *ngFor="let nivel of nivelesActividad" [value]="nivel.id">
+              {{ nivel.nombre }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="section-title">Tu Objetivo</h2>
+      <div class="objetivos-container">
+        <div
+          class="objetivo-card"
+          *ngFor="let obj of objetivos"
+          [class.selected]="objetivoSeleccionado === obj.id"
+          [class.disabled]="!isEditing"
+          (click)="isEditing && (objetivoSeleccionado = obj.id)"
+        >
+          <div class="obj-icon">
+            <mat-icon>{{ obj.id === 1 ? 'trending_down' : obj.id === 2 ? 'trending_up' : 'fitness_center' }}</mat-icon>
+          </div>
+          <span class="obj-name">{{ obj.nombre }}</span>
+        </div>
+      </div>
+
+      <div class="actions-row" *ngIf="isEditing">
+        <button mat-button color="warn" (click)="toggleEdit()">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="guardarTodo()">Guardar Cambios</button>
+      </div>
+
+    </mat-card>
+
+  </div>
+</div>
