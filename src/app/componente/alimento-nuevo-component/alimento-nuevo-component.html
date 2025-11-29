@@ -2,39 +2,39 @@
   <mat-card-title>Nuevo Alimento</mat-card-title>
   <mat-card-content>
     <form [formGroup]="alimentoForm" class="form-container" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre" placeholder="Nombre del alimento" />
         <mat-error *ngIf="alimentoForm.get('nombre')?.hasError('required')">El nombre es obligatorio</mat-error>
         <mat-error *ngIf="alimentoForm.get('nombre')?.hasError('maxlength')">Máx 200 caracteres</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Proteínas (g)</mat-label>
         <input matInput type="number" formControlName="proteina" placeholder="0" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Carbohidratos (g)</mat-label>
         <input matInput type="number" formControlName="carbohidrato" placeholder="0" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Grasas (g)</mat-label>
         <input matInput type="number" formControlName="grasa" placeholder="0" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Calorías (kcal)</mat-label>
         <input matInput type="number" formControlName="calorias" placeholder="0" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Fibra (g)</mat-label>
         <input matInput type="number" formControlName="fibra" placeholder="0" />
       </mat-form-field>
 
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Categoría</mat-label>
         <mat-select formControlName="categoriaId" placeholder="Selecciona una categoría">
           <mat-option *ngFor="let c of categorias" [value]="c.idCategoria">{{ c.nombre }}</mat-option>

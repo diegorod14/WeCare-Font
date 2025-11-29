@@ -1,17 +1,19 @@
 :host {
+  display: block;
   --primary-green: #81C784;
   --dark-green: #388E3C;
   --accent-green: #4CAF50;
   --text-dark: #2c3e50;
   --text-light: #546e7a;
+  --navbar-height: 70px; /* Ajusta esto si tu barra mide más o menos */
 }
 
 .main-container {
   font-family: 'Poppins', sans-serif;
   background-color: var(--primary-green);
   position: relative;
-  /* CLAVE: Ocupar exactamente el 100% de la altura y ocultar sobrantes */
-  height: 100vh;
+  /* CLAVE: Altura total menos el navbar */
+  height: calc(100vh - var(--navbar-height));
   width: 100%;
   overflow: hidden;
   display: flex;
@@ -23,8 +25,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 60%;
-  height: 120%; /* Un poco más alto para asegurar cobertura al mover cosas */
+  width: 55%; /* Reducido un poco para equilibrar */
+  height: 110%;
   background-color: #fff;
   z-index: 0;
   border-bottom-right-radius: 100% 80%;
@@ -38,24 +40,25 @@
   max-width: 1400px;
   margin: 0 auto;
   align-items: center;
+  justify-content: space-between;
   position: relative;
   z-index: 10;
-  /* CLAVE: Subimos todo el bloque un poco hacia arriba */
-  margin-top: -40px;
+  /* Quitamos el margin-top negativo para que Flexbox lo centre perfectamente */
+  margin-top: 0;
 }
 
 .hero-text {
-  width: 45%; /* Reducido un poco para dar aire */
-  padding-right: 40px;
+  width: 45%;
+  padding-right: 20px;
 }
 
 h1 {
   font-family: 'Playfair Display', serif;
-  /* Usamos 'vh' o clamp para que la letra no sea gigante en pantallas bajas */
-  font-size: clamp(3rem, 5vw, 4.5rem);
+  /* Ajuste dinámico para que el texto no sea enorme en laptops pequeñas */
+  font-size: clamp(2.5rem, 5vh, 4rem);
   line-height: 1.1;
   color: var(--text-dark);
-  margin-bottom: 20px;
+  margin-bottom: 2vh;
   position: relative;
 }
 
@@ -77,9 +80,9 @@ h1 .highlight {
 
 .hero-text p {
   color: var(--text-light);
-  line-height: 1.6;
-  margin-bottom: 30px;
-  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 3vh;
+  font-size: clamp(0.9rem, 1.8vh, 1.05rem);
   max-width: 440px;
 }
 
@@ -93,7 +96,7 @@ h1 .highlight {
 .cta-btn {
   background-color: var(--accent-green);
   color: white;
-  padding: 12px 40px;
+  padding: 12px 35px;
   border: none;
   border-radius: 30px;
   font-weight: 600;
@@ -125,7 +128,7 @@ h1 .highlight {
 
 /* IMAGEN DERECHA */
 .hero-image {
-  width: 55%;
+  width: 50%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -133,11 +136,13 @@ h1 .highlight {
 }
 
 .plate {
-  /* CLAVE: El tamaño depende de la altura de la pantalla (vh) */
-  width: 450px;
-  height: 450px;
-  max-width: 45vh; /* Nunca será más grande que el 45% de la altura de la pantalla */
-  max-height: 45vh;
+  /* Hacemos el plato dinámico basado en la altura de la pantalla disponible */
+  width: 45vh;
+  height: 45vh;
+  min-width: 300px;
+  min-height: 300px;
+  max-width: 500px;
+  max-height: 500px;
   background-color: #fff;
   border-radius: 50%;
   display: flex;
@@ -168,11 +173,10 @@ h1 .highlight {
   z-index: 1;
 }
 
-/* La tabla se ajusta proporcionalmente al plato */
 .cutting-board {
   position: absolute;
-  width: 60%; /* Relativo al contenedor */
-  height: 80%;
+  width: 70%;
+  height: 90%;
   background-color: #E67E22;
   top: 50%;
   left: 50%;
@@ -182,7 +186,7 @@ h1 .highlight {
   z-index: -1;
 }
 
-/* ANIMACIONES (Igual que antes) */
+/* ANIMACIONES */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
@@ -210,26 +214,26 @@ h1 .highlight {
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  /* En móviles sí permitimos scroll si es necesario, pero intentamos ajustar */
+  /* En móvil permitimos que crezca si es necesario */
   .main-container {
-    height: 100vh; /* Intentamos mantenerlo */
-    min-height: 600px; /* Pero con un mínimo */
-    display: flex;
+    height: auto;
+    min-height: calc(100vh - var(--navbar-height));
     flex-direction: column;
-    justify-content: center;
+    padding-bottom: 40px;
+    overflow-y: auto;
   }
 
   .white-curve-bg {
     width: 100%;
-    height: 45vh;
+    height: 40vh;
     border-radius: 0 0 50% 50% / 0 0 30% 30%;
   }
 
   .hero {
     flex-direction: column-reverse;
     text-align: center;
-    margin-top: 0;
-    gap: 20px;
+    margin-top: 20px;
+    gap: 30px;
   }
 
   .hero-text {
@@ -240,11 +244,13 @@ h1 .highlight {
     align-items: center;
   }
 
-  h1 { font-size: 2.5rem; }
+  h1 { font-size: 2.2rem; }
   h1::before { display: none; }
 
+  .cta-group { align-items: center; }
+
   .plate {
-    width: 35vh;
-    height: 35vh;
+    width: 280px;
+    height: 280px;
   }
 }

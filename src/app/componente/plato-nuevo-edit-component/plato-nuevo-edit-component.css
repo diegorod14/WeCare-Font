@@ -1,0 +1,100 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.example-card {
+  max-width: 450px;
+  width: 100%;
+  padding: 30px 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border: 1px solid #f0f0f0;
+}
+
+mat-card-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 25px !important;
+  letter-spacing: -0.5px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+/* Estilizado de inputs */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #e0e0e0;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #4CAF50;
+}
+
+::ng-deep .mat-form-field-label {
+  color: #78909c;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #4CAF50;
+}
+
+input {
+  color: #333;
+}
+
+/* Botón Registrar */
+button[type="submit"] {
+  width: 100%;
+  height: 50px;
+  background-color: #4CAF50; /* Verde MyCare */
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 25px;
+  margin-top: 15px;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #43A047;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Ajustes Responsive */
+@media (max-width: 600px) {
+  .example-card {
+    padding: 20px;
+    box-shadow: none;
+    border: none;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+  }
+}

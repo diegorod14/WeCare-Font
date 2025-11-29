@@ -7,15 +7,15 @@
     <span class="spacer"></span>
     @if(esUsuario()) {
     <button mat-raised-button [routerLink]="'/dashboard'">Dashboard</button>
-    <button mat-raised-button [routerLink]="'/Alimento'">Alimentos</button>
     <button mat-raised-button [routerLink]="'/Plato'"> Platos </button>
     <button mat-raised-button [routerLink]="'/nuevo-edit'">Nuevo Plato</button>
-    <button mat-raised-button [routerLink]="'/NuevoAlimento'">Nuevo Alimento</button>
     <button mat-raised-button [routerLink]="'/ListaNutricionista'">Nutricionistas</button>
       <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
     }
     @if(esNutricionista()) {
       <button mat-raised-button [routerLink]="'/usuarios'">Usuarios</button>
+      <button mat-raised-button [routerLink]="'/Alimento'">Alimentos</button>
+      <button mat-raised-button [routerLink]="'/NuevoAlimento'">Nuevo Alimento</button>
       <button mat-raised-button color="warn" (click)="onLogout()">Cerrar Sesión</button>
     }
     @if(!esUsuario() && !esNutricionista()) {

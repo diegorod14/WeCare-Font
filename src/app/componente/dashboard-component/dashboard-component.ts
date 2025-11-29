@@ -18,6 +18,7 @@ interface MacroRow {
   label: string;
   value: number;
   percent: number;
+  color: string; // Agregamos color para vincular barra con gráfico
 }
 
 @Component({
@@ -49,6 +50,9 @@ export class DashboardComponent implements OnInit {
   macros: MacroRow[] = [];
   macroPieGradient = '';
 
+  // Colores para: Calorías(Azul), Proteína(Verde), Carbos(Amarillo), Grasas(Rojo)
+  readonly COLORES_MACROS = ['#42a5f5', '#66bb6a', '#ffca28', '#ef5350'];
+
   private usuarioInformacionService = inject(UsuarioInformacionService);
   private usuarioIngestaService = inject(UsuarioIngestaService);
   private usuarioObjetivoService = inject(UsuarioObjetivoServices);
@@ -68,22 +72,23 @@ export class DashboardComponent implements OnInit {
   }
 
   private cargarDatos(userId: number): void {
+    // Cargar Usuario (Nombre)
     this.usuarioService.listId(userId).subscribe({
-      next: (user) => {
-        this.nombreUsuario = user.nombres || 'Usuario';
-      },
-      error: (err) => console.error('Error cargando usuario:', err)
+      next: (user) => { this.nombreUsuario = user.nombres || 'Usuario'; },
+      error: (err) => console.error(err)
     });
 
+    // Cargar Info (Peso actual)
     this.usuarioInformacionService.listId(userId).subscribe({
       next: (info) => {
         this.usuarioInformacion = info;
         this.pesoActual = info.pesoKg;
         this.checkDataLoaded();
       },
-      error: (err) => console.error('Error cargando usuario-informacion:', err)
+      error: (err) => console.error(err)
     });
 
+    // Cargar Ingesta (Metas, IMC)
     this.usuarioIngestaService.listId(userId).subscribe({
       next: (ingesta) => {
         this.usuarioIngesta = ingesta;
@@ -91,30 +96,29 @@ export class DashboardComponent implements OnInit {
         this.imc = ingesta.imc;
         this.checkDataLoaded();
       },
-      error: (err) => console.error('Error cargando usuario-ingesta:', err)
+      error: (err) => console.error(err)
     });
 
+    // Cargar Objetivo
     this.usuarioObjetivoService.findByUsuarioId(userId).subscribe({
       next: (objetivos) => {
         if (objetivos && objetivos.length > 0) {
           const ultimoObjetivo = objetivos[objetivos.length - 1];
-          const objetivoId = ultimoObjetivo.objetivo_id;
-
-          this.objetivoService.findById(objetivoId).subscribe({
+          this.objetivoService.findById(ultimoObjetivo.objetivo_id).subscribe({
             next: (obj) => {
               this.objetivo = obj;
               this.checkDataLoaded();
             },
-            error: (err) => console.error('Error cargando objetivo:', err)
+            error: (err) => console.error(err)
           });
         }
       },
-      error: (err) => console.error('Error cargando usuario-objetivo:', err)
+      error: (err) => console.error(err)
     });
   }
 
   private checkDataLoaded(): void {
-    if (this.pesoActual > 0 && this.pesoIdeal > 0 && this.imc > 0) {
+    if (this.pesoActual > 0 || this.pesoIdeal > 0) {
       this.calcularDerivados();
     }
   }
@@ -127,76 +131,88 @@ export class DashboardComponent implements OnInit {
       const payload = JSON.parse(atob(parts[1]));
       return payload?.userId || null;
     } catch (e) {
-      console.error('Error decodificando token:', e);
       return null;
     }
   }
 
   private calcularDerivados(): void {
-    this.pesoActual = this.usuarioInformacion.pesoKg;
-    this.pesoIdeal = this.usuarioIngesta.pesoIdeal;
-    this.imc = this.usuarioIngesta.imc;
+    // Recalcular valores locales
+    this.pesoActual = this.usuarioInformacion.pesoKg || 0;
+    this.pesoIdeal = this.usuarioIngesta.pesoIdeal || 0;
+    this.imc = this.usuarioIngesta.imc || 0;
 
+    // 1. Mensaje de Peso
     const diff = Math.abs(this.pesoActual - this.pesoIdeal);
-    if (diff <= 3) {
-      this.pesoMensaje = '¡Estás muy cerca!';
-    } else if (diff <= 8) {
-      this.pesoMensaje = 'Estás cerca, sigue así';
+    if (diff <= 1) {
+      this.pesoMensaje = '¡Estás en tu peso ideal, excelente trabajo!';
+    } else if (diff <= 3) {
+      this.pesoMensaje = '¡Estás muy cerca, un último esfuerzo!';
     } else {
       this.pesoMensaje = 'Tienes camino por recorrer, ¡tú puedes!';
     }
 
-    if (this.pesoActual <= this.pesoIdeal) {
-      this.pesoProgress = 100;
-    } else {
-      const pesoMaximoEsperado = this.pesoIdeal * 1.5;
-
-      if (this.pesoActual >= pesoMaximoEsperado) {
-        this.pesoProgress = 0;
+    // 2. Progreso de Peso (Lógica visual)
+    if (this.pesoIdeal > 0) {
+      if (this.pesoActual <= this.pesoIdeal) {
+        // Si ya llegaste o pesas menos (para perdida de peso)
+        // Ojo: Si el objetivo es subir, la lógica seria inversa.
+        // Asumiremos lógica general de "acercamiento"
+        this.pesoProgress = 100;
       } else {
-        const rangoTotal = pesoMaximoEsperado - this.pesoIdeal;
-        const avance = pesoMaximoEsperado - this.pesoActual;
-        this.pesoProgress = (avance / rangoTotal) * 100;
+        // Ejemplo: Peso 100, Ideal 70. Max esperado visual 120.
+        const baseVisual = this.pesoIdeal * 1.5;
+        const totalRange = baseVisual - this.pesoIdeal;
+        const currentPosition = baseVisual - this.pesoActual;
+        this.pesoProgress = Math.max(0, Math.min(100, (currentPosition / totalRange) * 100));
       }
     }
 
-    console.log('=== CÁLCULO DE PROGRESO ===');
-    console.log('Peso actual:', this.pesoActual, 'kg');
-    console.log('Peso ideal:', this.pesoIdeal, 'kg');
-    console.log('Peso máximo esperado:', this.pesoIdeal * 1.5, 'kg');
-    console.log('Falta por perder:', Math.max(0, this.pesoActual - this.pesoIdeal), 'kg');
-    console.log('Progreso calculado:', this.pesoProgress.toFixed(2), '%');
-    console.log('===========================');
+    // 3. Macros
+    const cal = this.usuarioIngesta.ingestaDiariaCalorias || 0;
+    const pro = this.usuarioIngesta.ingestaDiariaProteina || 0;
+    const carb = this.usuarioIngesta.ingestaDiariaCarbohidrato || 0;
+    const fat = this.usuarioIngesta.ingestaDiariaGrasa || 0;
 
-    const calorias = this.usuarioIngesta.ingestaDiariaCalorias;
-    const proteina = this.usuarioIngesta.ingestaDiariaProteina;
-    const carbohidratos = this.usuarioIngesta.ingestaDiariaCarbohidrato;
-    const grasas = this.usuarioIngesta.ingestaDiariaGrasa;
-
-    const total = calorias + proteina + carbohidratos + grasas || 1;
+    const totalMass = pro + carb + fat || 1; // Para porcentajes relativos de macros (excluyendo calorias de la suma de masa)
+    // O usamos el total calórico, pero visualmente suele ser masa g.
+    // Usaremos la lógica de tu código anterior:
+    const totalCalc = cal + pro + carb + fat || 1;
 
     this.macros = [
-      { key: 'calorias', label: 'Calorías', value: calorias, percent: (calorias * 100) / total },
-      { key: 'proteina', label: 'Proteína', value: proteina, percent: (proteina * 100) / total },
-      { key: 'carbohidratos', label: 'Carbohidratos', value: carbohidratos, percent: (carbohidratos * 100) / total },
-      { key: 'grasas', label: 'Grasas', value: grasas, percent: (grasas * 100) / total }
+      { key: 'calorias', label: 'Calorías', value: cal, percent: 100, color: this.COLORES_MACROS[0] }, // Calorias siempre barra llena o ref
+      { key: 'proteina', label: 'Proteína', value: pro, percent: (pro * 100) / totalCalc * 4, color: this.COLORES_MACROS[1] }, // *4 visual fix
+      { key: 'carbohidratos', label: 'Carbohidratos', value: carb, percent: (carb * 100) / totalCalc * 4, color: this.COLORES_MACROS[2] },
+      { key: 'grasas', label: 'Grasas', value: fat, percent: (fat * 100) / totalCalc * 4, color: this.COLORES_MACROS[3] }
     ];
 
-    this.macroPieGradient = this.buildMacroPieGradient(this.macros);
+    // Ajuste porcentual para el gráfico de torta (solo macros, sin calorias)
+    const pieTotal = pro + carb + fat || 1;
+    const pieData = [
+      { percent: 0, color: this.COLORES_MACROS[0] }, // Skip calorias en pie chart visualmente o usarlo de fondo
+      { percent: (pro / pieTotal), color: this.COLORES_MACROS[1] },
+      { percent: (carb / pieTotal), color: this.COLORES_MACROS[2] },
+      { percent: (fat / pieTotal), color: this.COLORES_MACROS[3] }
+    ];
+
+    this.macroPieGradient = this.buildMacroPieGradient(pieData);
   }
 
-  private buildMacroPieGradient(data: MacroRow[]): string {
-    const totalPercent = data.reduce((acc, m) => acc + m.percent, 0) || 1;
-    let current = 0;
-    const colores = ['#42a5f5', '#66bb6a', '#ffca28', '#ef5350'];
+  private buildMacroPieGradient(data: { percent: number, color: string }[]): string {
+    let currentAngle = 0;
+    const stops: string[] = [];
 
-    const stops: string[] = data.map((m, index) => {
-      const start = current;
-      const end = current + (m.percent * 100) / totalPercent;
-      current = end;
-      const color = colores[index] || '#ccc';
-      return `${color} ${start}% ${end}%`;
-    });
+    // Ignoramos el indice 0 (calorias) para el pie chart de macros
+    for(let i = 1; i < data.length; i++) {
+      const start = currentAngle;
+      const end = currentAngle + (data[i].percent * 100);
+      currentAngle = end;
+      stops.push(`${data[i].color} ${start}% ${end}%`);
+    }
+
+    // Rellenar resto si falta (por redondeo)
+    if (currentAngle < 100) {
+      stops.push(`${data[data.length-1].color} ${currentAngle}% 100%`);
+    }
 
     return `conic-gradient(${stops.join(', ')})`;
   }

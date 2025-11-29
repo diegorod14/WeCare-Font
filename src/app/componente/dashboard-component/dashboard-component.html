@@ -1,50 +1,75 @@
-<mat-card class="dashboard-card">
-  <div class="dashboard-layout">
-    <div class="panel panel-left">
-      <h1 class="title">Bienvenido {{ nombreUsuario }}</h1>
+<div class="dashboard-page">
+  <mat-card class="dashboard-card">
+    <div class="dashboard-content">
 
-      <div class="peso-section">
-        <div class="peso-header">
-          <div class="peso-title">Peso objetivo:</div>
-          <div class="peso-message">{{ pesoMensaje }}</div>
-        </div>
+      <!-- LADO IZQUIERDO: Bienvenida, Peso, IMC -->
+      <div class="panel-left">
+        <div class="welcome-section">
+          <h1>Bienvenido, {{ nombreUsuario }}</h1>
 
-        <mat-progress-bar class="peso-progress" mode="determinate" [value]="pesoProgress"></mat-progress-bar>
+          <div class="goal-group">
+            <span class="goal-label">Peso objetivo:</span>
+            <p class="motivation-text">{{ pesoMensaje }}</p>
+          </div>
 
-        <div class="peso-values">
-          <span>{{ pesoActual | number : '1.0-2' }} kg</span>
-          <span>{{ pesoIdeal | number : '1.0-2' }} kg</span>
-        </div>
-      </div>
-
-      <div class="imc-section">
-        <div class="imc-label">IMC:</div>
-        <div class="imc-value">{{ imc | number : '1.0-2' }}</div>
-      </div>
-    </div>
-
-    <mat-divider vertical></mat-divider>
-
-    <div class="panel panel-right">
-      <div class="macros-top">
-        <div class="macros-bars">
-          <div class="macro-row" *ngFor="let m of macros">
-            <span class="macro-label">{{ m.label }}</span>
-            <mat-progress-bar class="macro-bar" mode="determinate" [value]="m.percent"></mat-progress-bar>
-            <span class="macro-value">{{ m.value | number : '1.0-2' }}</span>
+          <!-- Barra de Peso Personalizada -->
+          <div class="weight-container">
+            <div class="weight-bar-bg">
+              <div class="weight-bar-fill" [style.width.%]="pesoProgress"></div>
+            </div>
+            <div class="weight-labels">
+              <span class="current-weight">
+                <strong>{{ pesoActual | number:'1.0-1' }}</strong> kg
+              </span>
+              <span class="target-weight">
+                <strong>{{ pesoIdeal | number:'1.0-1' }}</strong> kg
+              </span>
+            </div>
           </div>
         </div>
 
-        <div class="macros-chart">
-          <div class="macro-pie" [style.background-image]="macroPieGradient"></div>
+        <div class="imc-section">
+          <span class="imc-label">IMC:</span>
+          <div class="imc-number">{{ imc | number:'1.2-2' }}</div>
         </div>
       </div>
 
-      <div class="objetivo-section">
-        <div class="objetivo-titulo">Objetivo:</div>
-        <div class="objetivo-nombre">{{ objetivo.nombre || 'Sin objetivo definido' }}</div>
-        <div class="objetivo-descripcion" *ngIf="objetivo?.descripcion">{{ objetivo.descripcion }}</div>
+      <!-- DIVISOR VERTICAL VISUAL -->
+      <div class="vertical-separator"></div>
+
+      <!-- LADO DERECHO: Macros y Gráfico -->
+      <div class="panel-right">
+
+        <div class="macros-list">
+          <div class="macro-item" *ngFor="let m of macros">
+            <span class="macro-name">{{ m.label }}</span>
+
+            <!-- Barra pequeña de color -->
+            <div class="mini-bar-track">
+              <div class="mini-bar-fill"
+                   [style.background-color]="m.color"
+                   [style.width.%]="m.key === 'calorias' ? 100 : m.percent * 3"> <!-- Multiplicador visual -->
+              </div>
+            </div>
+
+            <span class="macro-val">{{ m.value | number:'1.0-1' }}</span>
+          </div>
+
+          <div class="objective-info">
+            <span class="obj-label">Objetivo:</span>
+            <span class="obj-val">{{ objetivo.nombre || 'Cargando...' }}</span>
+          </div>
+        </div>
+
+        <!-- GRÁFICO CIRCULAR -->
+        <div class="chart-container">
+          <div class="donut-chart" [style.background]="macroPieGradient">
+            <div class="center-white"></div>
+          </div>
+        </div>
+
       </div>
+
     </div>
-  </div>
-</mat-card>
+  </mat-card>
+</div>

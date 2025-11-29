@@ -37,9 +37,8 @@ export class PlatoNuevoEditComponent implements OnInit {
   constructor() {
     this.platoForm = this.fb.group({
       id: [''],
-      nombre : ['', Validators.required],
-      informacion: ['', Validators.required],
-      esFavorito: ['', Validators.required],
+      nombre: ['', Validators.required],
+      informacion: ['', Validators.required]
     });
   }
   ngOnInit() {
@@ -57,8 +56,7 @@ export class PlatoNuevoEditComponent implements OnInit {
           this.platoForm.patchValue({
             id:data.id,
             nombre:data.nombre,
-            informacion:data.informacion,
-            esFavorito: data.esFavorito,
+            informacion:data.informacion
           })
         }
       })
@@ -66,18 +64,11 @@ export class PlatoNuevoEditComponent implements OnInit {
   }
   onSubmit(){
     if(this.platoForm.valid){
-      const token = localStorage.getItem('token');
-      const userId = token ? this.extractUserIdFromToken(token) : null;
-      if (!userId) {
-        alert('No se pudo obtener el usuario. Inicia sesión nuevamente.');
-        return;
-      }
       let plato = this.platoForm.value;
-      plato.usuarioId = userId;
       if(!this.edicion){
         this.platoService.insert(plato).subscribe({
           next: () => {
-            this.router.navigate(['/platos']);
+            this.router.navigate(['/Plato']); // redirige a PlatoComponent
           },
           error: err => {
             alert('Error al crear el plato: ' + (err?.error?.message || 'Error desconocido'));
@@ -86,23 +77,13 @@ export class PlatoNuevoEditComponent implements OnInit {
       } else{
         this.platoService.update(plato).subscribe({
           next: () => {
-            this.router.navigate(['/platos']);
+            this.router.navigate(['/Plato']); // redirige a PlatoComponent
           },
           error: err => {
             alert('Error al actualizar el plato: ' + (err?.error?.message || 'Error desconocido'));
           }
         });
       }
-    }
-  }
-  private extractUserIdFromToken(token: string): number | null {
-    try {
-      const parts = token.split('.');
-      if (parts.length !== 3) return null;
-      const payload = JSON.parse(atob(parts[1]));
-      return payload?.userId || null;
-    } catch (e) {
-      return null;
     }
   }
 }

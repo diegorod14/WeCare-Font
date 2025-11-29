@@ -1,8 +1,142 @@
-.example-card{
-  margin: 0 auto;
-  width: 600px;
-}
-.form-container{
+:host {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centrado vertical si hay espacio */
+  padding: 20px;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+.example-card {
+  max-width: 600px; /* Un poco más ancho para que quepan 2 columnas */
+  width: 100%;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border: 1px solid #f0f0f0;
+}
+
+mat-card-title {
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 25px !important;
+}
+
+/* --- LAYOUT DE GRILLA (La parte mágica) --- */
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Crea 2 columnas iguales */
+  column-gap: 20px; /* Espacio horizontal entre inputs */
+  row-gap: 5px;     /* Espacio vertical pequeño (el padding del input hace el resto) */
+}
+
+/* El PRIMER mat-form-field (Nombre) ocupa las 2 columnas */
+mat-form-field:first-of-type {
+  grid-column: span 2;
+}
+
+/* El ÚLTIMO mat-form-field (Categoría) ocupa las 2 columnas */
+mat-form-field:nth-last-of-type(1) {
+  grid-column: span 2;
+}
+
+mat-form-field {
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+/* --- ESTILOS VISUALES (Outline Style) --- */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #e0e0e0;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #4CAF50;
+}
+
+::ng-deep .mat-form-field-label {
+  color: #78909c;
+}
+
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #4CAF50;
+}
+
+/* Color del texto dentro del input */
+input, mat-select {
+  color: #333;
+}
+
+/* --- BOTONES --- */
+.actions {
+  grid-column: span 2; /* Los botones ocupan todo el ancho */
+  display: flex;
+  justify-content: flex-end; /* Alineados a la derecha */
+  gap: 15px;
+  margin-top: 20px;
+}
+
+/* Botón Guardar (Principal) */
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 0 30px;
+  height: 45px;
+  border-radius: 25px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transition: transform 0.2s;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background-color: #43A047;
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:disabled {
+  background-color: #e0e0e0;
+  box-shadow: none;
+}
+
+/* Botón Limpiar (Secundario) */
+button[type="button"] {
+  color: #757575;
+  font-weight: 500;
+}
+
+button[type="button"]:hover {
+  background-color: #f5f5f5;
+  color: #333;
+  border-radius: 25px;
+}
+
+.error {
+  grid-column: span 2;
+  color: #e53935;
+  font-size: 0.85rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Responsive: En móviles volvemos a una sola columna */
+@media (max-width: 600px) {
+  .form-container {
+    grid-template-columns: 1fr; /* 1 columna */
+  }
+
+  mat-form-field:first-of-type,
+  mat-form-field:nth-last-of-type(1),
+  .actions {
+    grid-column: span 1;
+  }
+
+  .example-card {
+    padding: 20px;
+    box-shadow: none;
+    border: none;
+  }
 }

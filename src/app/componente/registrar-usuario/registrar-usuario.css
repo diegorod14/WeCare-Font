@@ -2,6 +2,7 @@
   display: block;
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
+  --navbar-height: 70px;
   --animation-curve: cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -12,7 +13,7 @@
 .main-container {
   display: flex;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - var(--navbar-height));
   overflow: hidden;
   background-color: #fff;
 }
@@ -31,7 +32,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
+  object-position: center;
   display: block;
 }
 
@@ -45,36 +46,45 @@
   flex: 1;
   display: flex;
   justify-content: center;
-  align-items: center; /* Esto ayuda a centrar verticalmente, pero el margin-top del header ayudará más */
+  align-items: center;
   background-color: #fff;
-  padding: 5vh 40px;
-  overflow: hidden;
+  padding: 0 3vw;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .form-wrapper {
   width: 100%;
   max-width: 460px;
-  max-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 20px 0;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 4vh;
-  /* CAMBIO: Agregamos margen arriba para bajar el texto */
-  margin-top: 3vh;
+  margin-bottom: 2vh;
   opacity: 0;
   animation: fadeInUp 0.8s var(--animation-curve) forwards;
   animation-delay: 0.2s;
 }
 
-.header h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #111; margin: 0; }
-.header p { color: #666; margin-top: 8px; font-size: 0.95rem; }
+.header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vh, 2.2rem);
+  color: #111;
+  margin: 0;
+}
+
+.header p {
+  color: #666;
+  margin-top: 0.5vh;
+  font-size: clamp(0.8rem, 1.5vh, 0.95rem);
+}
 
 .input-group {
-  margin-bottom: 2.5vh;
+  margin-bottom: 1.5vh;
   display: flex;
   flex-direction: column;
   opacity: 0;
@@ -83,18 +93,18 @@
 
 label {
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 1.5vh, 0.85rem);
   color: #333;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   margin-left: 2px;
 }
 
 input, select {
-  height: 48px;
+  height: clamp(36px, 5.5vh, 46px);
   padding: 0 16px;
   border: 1px solid #e0e0e0;
   border-radius: 10px;
-  font-size: 0.95rem;
+  font-size: clamp(0.85rem, 1.6vh, 0.95rem);
   width: 100%;
   outline: none;
   transition: all 0.2s ease;
@@ -111,7 +121,7 @@ input:focus, select:focus {
   display: flex;
   flex-direction: row;
   width: 100%;
-  gap: 20px;
+  gap: 15px;
   opacity: 0;
   animation: fadeInUp 0.6s var(--animation-curve) forwards;
 }
@@ -120,20 +130,20 @@ input:focus, select:focus {
 
 .btn-submit {
   width: 100%;
-  height: 52px;
+  height: clamp(40px, 6vh, 50px);
   background-color: #4CAF50;
   color: white;
   border: none;
-  border-radius: 26px;
+  border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 2vh;
+  margin-top: 1vh;
   transition: background 0.2s, transform 0.1s;
   box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
   opacity: 0;
   animation: fadeInUp 0.8s var(--animation-curve) forwards;
-  animation-delay: 1s; /* Retraso para que salga después de todos los inputs */
+  animation-delay: 1s;
 }
 
 .btn-submit:hover {
@@ -147,8 +157,8 @@ input:focus, select:focus {
 
 .footer {
   text-align: center;
-  margin-top: 3vh;
-  font-size: 0.9rem;
+  margin-top: 1.5vh;
+  font-size: clamp(0.75rem, 1.4vh, 0.9rem);
   color: #666;
   opacity: 0;
   animation: fadeInUp 0.8s var(--animation-curve) forwards;
@@ -164,42 +174,25 @@ input:focus, select:focus {
 .footer a:hover { text-decoration: underline; }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInScale {
-  from {
-    opacity: 0;
-    transform: scale(1.05);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(1.05); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-/* --- ASIGNACIÓN DE RETARDOS EXACTOS (CORREGIDO) --- */
-/* Usamos nth-child en los divs directos del form para no fallar */
-
-form > div:nth-child(1) { animation-delay: 0.3s; } /* Usuario */
-form > div:nth-child(2) { animation-delay: 0.4s; } /* Fila Nombres/Apellidos */
-form > div:nth-child(3) { animation-delay: 0.5s; } /* Género */
-form > div:nth-child(4) { animation-delay: 0.6s; } /* Correo */
-form > div:nth-child(5) { animation-delay: 0.7s; } /* Celular */
-form > div:nth-child(6) { animation-delay: 0.8s; } /* Contraseña - AHORA SÍ ANIMARÁ */
+form > div:nth-child(1) { animation-delay: 0.3s; }
+form > div:nth-child(2) { animation-delay: 0.4s; }
+form > div:nth-child(3) { animation-delay: 0.5s; }
+form > div:nth-child(4) { animation-delay: 0.6s; }
+form > div:nth-child(5) { animation-delay: 0.7s; }
+form > div:nth-child(6) { animation-delay: 0.8s; }
 
 @media (max-width: 900px) {
-  .main-container { flex-direction: column; height: auto; overflow: auto; }
-  .image-section { width: 100%; height: 220px; flex-shrink: 0; }
-  .form-section { padding: 30px 20px; overflow: visible; }
+  .main-container { flex-direction: column; height: auto; overflow-y: auto; }
+  .image-section { width: 100%; height: 200px; flex-shrink: 0; }
+  .form-section { padding: 30px 20px; height: auto; }
   .row-split { flex-direction: column; gap: 15px; }
-  .header { margin-bottom: 30px; margin-top: 10px; }
-  .input-group { margin-bottom: 18px; }
 }
