@@ -1,163 +1,189 @@
-/* Removed Poppins import - using global styles.css font */
-
-:host {
-  display: block;
-  width: 100%;
-  /* Apply system font stack */
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+/* Contenedor principal */
+.plato-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.mat-elevation-z8 {
+/* Header */
+.header {
   display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  border: 1px solid #eee;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-table {
+.header h1 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  color: #333;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Tarjeta de tabla */
+.tabla-card {
+  margin-top: 24px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.tabla-container {
+  overflow-x: auto;
   width: 100%;
-  table-layout: auto;
 }
 
-th.mat-header-cell,
-td.mat-cell {
-  padding: 16px 10px !important;
-  border-bottom: 1px solid #f5f5f5;
-  vertical-align: middle;
-  /* Use system font stack in cells */
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+.tabla-platos {
+  width: 100%;
+  background-color: white;
+  border-collapse: collapse;
 }
 
-th.mat-header-cell {
-  background-color: #f4f6f4;
-  color: #111;
-  font-size: 0.9rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-bottom: 2px solid #e8f5e9;
-  height: 60px;
-  text-align: center !important;
+/* Cabecera de la tabla */
+.tabla-platos th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+  color: #333;
+  padding: 16px 8px;
+  text-align: left;
 }
 
-td.mat-cell {
-  color: #111;
-  font-size: 0.95rem;
+/* Celdas de la tabla */
+.tabla-platos td {
+  padding: 16px 8px;
+  color: #333;
 }
 
-tr.mat-row:hover {
-  background-color: #f1f8e9;
+.tabla-platos tr:hover {
+  background-color: #f9f9f9;
 }
 
-.mat-column-id {
-  width: 60px;
-  text-align: center !important;
-  font-weight: 400;
+/* Columna Acciones */
+.mat-column-acciones {
+  width: 140px;
+  text-align: center;
 }
 
-.mat-column-nombre {
-  width: 20%;
-  text-align: left !important;
-  padding-left: 20px !important;
-  font-weight: 400;
-  color: #111;
-}
-
-th.mat-column-nombre {
-  text-align: left !important;
-  padding-left: 20px !important;
-}
-
-.mat-column-informacion {
-  width: auto;
-  text-align: left !important;
-  padding-left: 10px !important;
-  color: #111;
-  line-height: 1.4;
-}
-
-th.mat-column-informacion {
-  text-align: left !important;
-  padding-left: 10px !important;
-}
-
-.mat-column-accion1,
-.mat-column-accion2 {
-  width: 80px !important;
-  max-width: 80px !important;
-  text-align: center !important;
-  padding: 0 !important;
-}
-
-button {
-  width: 40px !important;
-  height: 40px !important;
-  min-width: 40px !important;
-  border-radius: 50% !important;
-  padding: 0 !important;
-  display: flex !important;
+/* Contenido de la celda de acciones */
+.acciones-cell {
+  display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto !important;
-  box-shadow: 0 3px 5px rgba(0,0,0,0.15) !important;
-  transition: transform 0.2s;
+  gap: 16px;
 }
 
-::ng-deep button .mat-button-wrapper {
+/* Botones de icono: solo icono, sin fondo ni borde raro */
+.acciones-cell button.mat-icon-button {
+  background: none !important;
+  box-shadow: none !important;
+  width: auto !important;
+  height: auto !important;
   padding: 0 !important;
   margin: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 0 !important;
 }
 
-button:hover {
-  transform: scale(1.1);
+/* Iconos dentro de la columna acciones */
+.acciones-cell mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: #424242;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.mat-column-accion1 button {
-  background-color: #42a5f5 !important;
-  color: white !important;
+/* Hover sobre iconos */
+.acciones-cell mat-icon:hover {
+  color: #000;
+  transform: scale(1.15);
 }
 
-.mat-column-accion2 button {
-  background-color: #ef5350 !important;
-  color: white !important;
+/* Fila sin datos */
+.sin-datos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  color: #999;
 }
 
-button .material-icons {
-  font-size: 20px !important;
-  width: 20px !important;
-  height: 20px !important;
-  line-height: 20px !important;
-  display: block !important;
-  margin: 0 !important;
+.sin-datos mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
 }
 
-tr.mat-no-data-row td {
-  padding: 40px;
-  text-align: center;
-  color: #78909c;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+.sin-datos p {
+  font-size: 18px;
+  margin: 0;
 }
 
+/* Overrides de Angular Material */
+::ng-deep .mat-mdc-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 8px !important;
+}
+
+::ng-deep .mat-mdc-raised-button {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* Paginador */
 mat-paginator {
   background-color: #fff;
   border-top: 1px solid #e0e0e0;
   color: #546e7a;
   font-weight: 500;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
 }
 
-::ng-deep .mat-paginator-container {
+::ng-deep .mat-mdc-paginator-container {
   min-height: 56px;
   justify-content: flex-end;
   padding: 0 20px;
 }
 
-::ng-deep .mat-form-field-underline {
-  display: none;
+/* Responsive */
+@media (max-width: 768px) {
+  .plato-container {
+    padding: 16px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header h1 {
+    font-size: 24px;
+  }
+
+  .tabla-platos {
+    font-size: 12px;
+  }
+
+  .tabla-platos td,
+  .tabla-platos th {
+    padding: 8px 4px;
+  }
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
