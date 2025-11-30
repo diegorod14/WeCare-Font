@@ -1,0 +1,175 @@
+<div class="registrar-comer-container">
+  <!-- Loading -->
+  <div *ngIf="cargando && !alimento" class="loading-container">
+    <mat-icon class="spinner">refresh</mat-icon>
+    <p>Cargando alimento...</p>
+  </div>
+
+  <!-- Contenido principal -->
+  <mat-card class="registrar-comer-card" *ngIf="alimento">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>restaurant</mat-icon>
+        Registrar Consumo de Alimento
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- Información del alimento -->
+      <div class="alimento-info">
+        <h3>{{ alimento.nombre }}</h3>
+        <span class="categoria-tag">{{ alimento.categoriaNombre }}</span>
+
+        <div class="valores-referencia">
+          <h4>Valores nutricionales por 100g:</h4>
+          <div class="valores-grid">
+            <div class="valor-item">
+              <mat-icon>local_fire_department</mat-icon>
+              <span>{{ alimento.calorias | number:'1.0-0' }} kcal</span>
+            </div>
+            <div class="valor-item">
+              <mat-icon>fitness_center</mat-icon>
+              <span>{{ alimento.proteina | number:'1.1-1' }}g proteína</span>
+            </div>
+            <div class="valor-item">
+              <mat-icon>grain</mat-icon>
+              <span>{{ alimento.carbohidrato | number:'1.1-1' }}g carbohidratos</span>
+            </div>
+            <div class="valor-item">
+              <mat-icon>water_drop</mat-icon>
+              <span>{{ alimento.grasa | number:'1.1-1' }}g grasas</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de consumo -->
+      <form class="formulario-consumo">
+        <div class="cantidad-row">
+          <mat-form-field appearance="outline" class="cantidad-field">
+            <mat-label>Cantidad</mat-label>
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="consumoRequest.cantidad"
+              name="cantidad"
+              min="0"
+              step="1"
+              required
+              (ngModelChange)="calcularCaloriasEstimadas()">
+            <mat-icon matSuffix>scale</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="unidad-field">
+            <mat-label>Unidad</mat-label>
+            <mat-select
+              [(ngModel)]="consumoRequest.unidad"
+              name="unidad"
+              (ngModelChange)="calcularCaloriasEstimadas()">
+              <mat-option value="g">Gramos (g)</mat-option>
+              <mat-option value="kg">Kilogramos (kg)</mat-option>
+              <mat-option value="ml">Mililitros (ml)</mat-option>
+              <mat-option value="l">Litros (l)</mat-option>
+              <mat-option value="porcion">Porción</mat-option>
+            </mat-select>
+            <mat-icon matSuffix>straighten</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="fecha-row">
+          <mat-form-field appearance="outline" class="fecha-field">
+            <mat-label>Fecha de consumo</mat-label>
+            <input
+              matInput
+              type="date"
+              [(ngModel)]="consumoRequest.fechaConsumo"
+              name="fecha"
+              required>
+            <mat-icon matSuffix>calendar_today</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="hora-field">
+            <mat-label>Hora</mat-label>
+            <input
+              matInput
+              type="time"
+              [(ngModel)]="consumoRequest.horaConsumo"
+              name="hora">
+            <mat-icon matSuffix>access_time</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Notas (opcional)</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="consumoRequest.nota"
+            name="nota"
+            rows="2"
+            placeholder="Ej: Desayuno, Almuerzo, Cena, Snack..."></textarea>
+          <mat-icon matSuffix>notes</mat-icon>
+        </mat-form-field>
+
+        <!-- Resumen de valores calculados -->
+        <div class="resumen-calculado">
+          <h4>
+            <mat-icon>calculate</mat-icon>
+            Valores nutricionales estimados
+          </h4>
+
+          <div class="resumen-grid">
+            <div class="resumen-item calorias">
+              <mat-icon>local_fire_department</mat-icon>
+              <div class="resumen-detalle">
+                <span class="label">Calorías</span>
+                <span class="valor">{{ calcularCaloriasEstimadas() | number:'1.1-1' }} kcal</span>
+              </div>
+            </div>
+
+            <div class="resumen-item proteina">
+              <mat-icon>fitness_center</mat-icon>
+              <div class="resumen-detalle">
+                <span class="label">Proteínas</span>
+                <span class="valor">{{ calcularProteinaEstimada() | number:'1.1-1' }}g</span>
+              </div>
+            </div>
+
+            <div class="resumen-item carbohidrato">
+              <mat-icon>grain</mat-icon>
+              <div class="resumen-detalle">
+                <span class="label">Carbohidratos</span>
+                <span class="valor">{{ calcularCarbohidratoEstimado() | number:'1.1-1' }}g</span>
+              </div>
+            </div>
+
+            <div class="resumen-item grasa">
+              <mat-icon>water_drop</mat-icon>
+              <div class="resumen-detalle">
+                <span class="label">Grasas</span>
+                <span class="valor">{{ calcularGrasaEstimada() | number:'1.1-1' }}g</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button
+        mat-button
+        (click)="cancelar()"
+        [disabled]="cargando">
+        <mat-icon>close</mat-icon>
+        Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="registrarConsumo()"
+        [disabled]="cargando">
+        <mat-icon>{{ cargando ? 'hourglass_empty' : 'check' }}</mat-icon>
+        {{ cargando ? 'Registrando...' : 'Registrar Consumo' }}
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
