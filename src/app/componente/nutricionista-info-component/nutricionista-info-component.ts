@@ -56,8 +56,13 @@ export class NutricionistaInfoComponent implements OnInit {
 
   private citasNutri: any[] = [];
   isSlotTaken = false;
+  slotTakenMessage = '';
+  private currentUserId: number | null = null;
 
   ngOnInit(): void {
+    // Extraer el userId del token
+    this.currentUserId = this.getUserIdFromToken();
+
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       const id = Number(idParam);
@@ -116,7 +121,7 @@ export class NutricionistaInfoComponent implements OnInit {
     this.horasAgenda = [
       { etiqueta: '8:00 am', seleccionado: false },
       { etiqueta: '8:30 am', seleccionado: false },
-      { etiqueta: '9:00 am', seleccionado: true },   // por defecto
+      { etiqueta: '9:00 am', seleccionado: true },
       { etiqueta: '9:30 am', seleccionado: false },
       { etiqueta: '10:00 am', seleccionado: false },
       { etiqueta: '10:30 am', seleccionado: false },
@@ -140,22 +145,66 @@ export class NutricionistaInfoComponent implements OnInit {
   }
 
   // Determina si el slot seleccionado (día+hora) ya tiene una cita
+  // O si el usuario actual ya tiene una cita ese día con este nutricionista
   private checkSlotAvailability(): void {
     const diaSeleccionado = this.diasAgenda.find(d => d.seleccionado);
     const horaSeleccionada = this.horasAgenda.find(h => h.seleccionado);
 
     if (!diaSeleccionado || !horaSeleccionada || !this.nutricionista) {
       this.isSlotTaken = false;
+      this.slotTakenMessage = '';
       return;
     }
 
     const fechaStr = this.formatFecha(diaSeleccionado.fecha);
     const horaStr = this.toHora24(horaSeleccionada.etiqueta);
 
-    this.isSlotTaken = this.citasNutri.some(c => c.fecha === fechaStr && c.hora === horaStr);
+    // PRIORIDAD 1: Verificar si el usuario actual ya tiene una cita ese día con este nutricionista
+    // (sin importar la hora seleccionada)
+    const usuarioTieneCitaEseDia = this.currentUserId
+      ? this.citasNutri.some(c =>
+          c.fecha === fechaStr &&
+          c.usuarioId === this.currentUserId
+        )
+      : false;
+
+    if (usuarioTieneCitaEseDia) {
+      this.isSlotTaken = true;
+      this.slotTakenMessage = 'Ya has reservado una cita en este día';
+      return; // Terminar aquí, no verificar el slot específico
+    }
+
+    // PRIORIDAD 2: Verificar si el slot específico (nutricionista + fecha + hora) está ocupado
+    const slotOcupado = this.citasNutri.some(c => c.fecha === fechaStr && c.hora === horaStr);
+
+    if (slotOcupado) {
+      this.isSlotTaken = true;
+      this.slotTakenMessage = 'Este horario ya está ocupado';
+    } else {
+      this.isSlotTaken = false;
+      this.slotTakenMessage = '';
+    }
   }
 
   // ---------- helpers para armar Cita ----------
+
+  private getUserIdFromToken(): number | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return null;
+    }
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        return null;
+      }
+      const payload = JSON.parse(atob(parts[1]));
+      return payload?.userId ?? null;
+    } catch (error) {
+      console.error('Error decodificando token', error);
+      return null;
+    }
+  }
 
   private formatFecha(fecha: Date): string {
     const y = fecha.getFullYear();
@@ -183,7 +232,8 @@ export class NutricionistaInfoComponent implements OnInit {
 
   agendar(): void {
     if (this.isSlotTaken) {
-      alert('Este horario ya está ocupado. Elige otro.');
+      // Usar el mismo mensaje que ya está definido en slotTakenMessage
+      alert(this.slotTakenMessage);
       return;
     }
     const diaSeleccionado = this.diasAgenda.find(d => d.seleccionado);

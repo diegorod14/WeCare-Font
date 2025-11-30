@@ -7,17 +7,19 @@ import {Plato} from '../../model/plato';
 import {NgOptimizedImage} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { GeminiComponent } from './gemini-component/gemini-component';
 
 @Component({
   selector: 'app-nav-bar-component',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, RouterLink, NgOptimizedImage, RouterLinkActive, MatIconModule, MatMenuModule],
+  imports: [MatToolbarModule, MatButtonModule, RouterLink, NgOptimizedImage, RouterLinkActive, MatIconModule, MatMenuModule, GeminiComponent],
   templateUrl: './nav-bar-component.html',
   styleUrls: ['./nav-bar-component.css'],
 })
 export class NavBarComponent {
     router: Router = inject(Router);
     rol: any;
+    isSidebarOpen = false;
   private loginService = inject(LoginService);
     esNutricionista(): boolean {
       this.rol = localStorage.getItem('rol');
@@ -30,6 +32,14 @@ export class NavBarComponent {
     onLogout(): void {
       this.loginService.logout();
       this.rol = null;
+    }
+
+    toggleSidebar(): void {
+      this.isSidebarOpen = !this.isSidebarOpen;
+    }
+
+    closeSidebar(): void {
+      this.isSidebarOpen = false;
     }
 
   protected readonly Plato = Plato;

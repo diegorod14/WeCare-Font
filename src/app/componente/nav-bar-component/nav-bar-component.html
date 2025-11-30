@@ -39,6 +39,10 @@
     }
 
     @if(esUsuario() || esNutricionista()) {
+      <button mat-icon-button (click)="toggleSidebar()" class="chat-btn">
+        <mat-icon>chat</mat-icon>
+      </button>
+
       <button mat-icon-button [matMenuTriggerFor]="settingsMenu" class="settings-btn">
         <mat-icon>settings</mat-icon>
       </button>
@@ -57,3 +61,22 @@
 
   </mat-toolbar-row>
 </mat-toolbar>
+
+<!-- Overlay oscuro cuando el sidebar está abierto -->
+@if(isSidebarOpen) {
+  <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+}
+
+<!-- Sidebar de chat -->
+<div class="chat-sidebar" [class.open]="isSidebarOpen">
+  <div class="sidebar-header">
+    <h2>Chat Asistente</h2>
+    <button mat-icon-button (click)="closeSidebar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="sidebar-content">
+    <app-gemini-component></app-gemini-component>
+  </div>
+</div>
+

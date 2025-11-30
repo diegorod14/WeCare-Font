@@ -69,10 +69,78 @@
   flex: 1 1 auto;
 }
 
+/* BOTÓN CHAT */
+.chat-btn {
+  color: white;
+  margin-left: 10px;
+  transition: all 0.2s ease;
+}
+
+.chat-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
 /* BOTÓN SETTINGS */
 .settings-btn {
   color: white;
   margin-left: 10px;
+}
+
+/* SIDEBAR DE CHAT */
+.chat-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px; /* Escondido inicialmente */
+  width: 400px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-sidebar.open {
+  right: 0; /* Se desliza hacia la vista */
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #4caf50;
+  color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.sidebar-header button {
+  color: white;
+}
+
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* OVERLAY OSCURO */
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+  cursor: pointer;
 }
 
 /* RESPONSIVE */
@@ -80,4 +148,9 @@
   .brand-text { font-size: 18px; margin-right: 10px; }
   .nav-link { padding: 0 10px !important; font-size: 12px; }
   .brand { margin-right: 10px; }
+
+  .chat-sidebar {
+    width: 100%;
+    right: -100%;
+  }
 }

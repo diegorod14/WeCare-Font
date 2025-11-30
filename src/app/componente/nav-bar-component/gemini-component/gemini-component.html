@@ -1,0 +1,50 @@
+<div class="chat-container">
+  <!-- Contenedor de mensajes -->
+  <div class="messages-container">
+    @if(messages.length === 0 && isLoading) {
+      <div class="loading-initial">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Cargando asistente...</p>
+      </div>
+    }
+
+    @for(message of messages; track message.timestamp) {
+      <div class="message" [class.user-message]="message.isUser" [class.bot-message]="!message.isUser">
+        <div class="message-content">
+          <p>{{ message.content }}</p>
+          <span class="message-time">{{ message.timestamp | date:'HH:mm' }}</span>
+        </div>
+      </div>
+    }
+
+    @if(isLoading && messages.length > 0) {
+      <div class="message bot-message">
+        <div class="message-content">
+          <mat-spinner diameter="20"></mat-spinner>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input de mensaje -->
+  <div class="input-container">
+    <mat-form-field class="message-input" appearance="outline">
+      <mat-label>Escribe tu mensaje...</mat-label>
+      <input
+        matInput
+        [(ngModel)]="userMessage"
+        (keyup.enter)="sendMessage()"
+        [disabled]="isLoading"
+        placeholder="Pregunta algo...">
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="sendMessage()"
+        [disabled]="!userMessage.trim() || isLoading"
+        class="send-button">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+</div>
+

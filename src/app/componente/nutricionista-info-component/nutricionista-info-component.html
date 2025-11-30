@@ -86,7 +86,7 @@
       >
         Agendar
       </button>
-      <div *ngIf="isSlotTaken" class="slot-taken-msg">Ya existe una cita en este horario</div>
+      <div *ngIf="isSlotTaken" class="slot-taken-msg">{{ slotTakenMessage }}</div>
     </div>
   </div>
 
